@@ -1,0 +1,16 @@
+@charset "utf-8";
+/* CSS Document */
+
+
+table{
+	border:#0066FF 1px solid;
+	width:600px;
+	}
+table td{
+	border:#0000FF 1px solid;
+	padding:5px;
+	}
+table th{
+	border:#0000FF 1px solid;
+	padding:5px;
+	}

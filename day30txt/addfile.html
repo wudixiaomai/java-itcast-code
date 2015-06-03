@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<style type="text/css">
+table a{
+	text-decoration:none;
+	}
+</style>
+<script type="text/javascript" src="doc.js"></script>
+<script type="text/javascript">
+
+function addFile()
+{
+	var tabNode = byTag("table")[0];
+	
+	var trNode = tabNode.insertRow();
+	
+	var tdNode_file = trNode.insertCell();
+	
+	var tdNode_del = trNode.insertCell();
+	
+	tdNode_file.innerHTML = "<input type='file' />";
+	tdNode_del.innerHTML = "<a href='javascript:void(0)' onclick='delFile()' >删除附件 </a>";
+	
+	
+}
+
+function delFile()
+{
+	//获取删除附件的a标签对象。
+	var node = event.srcElement;
+	
+	
+	//通过层次关系。获取a标签对象的父节点的父节点，得到tr对象。
+	var trNode = node.parentNode.parentNode;
+	
+	//将tr对象删除。
+	trNode.removeNode(true);
+}
+
+</script>
+
+</head>
+
+<body>
+<table>
+
+	<tr>
+    	<td><a href="javascript:void(0)" onclick="addFile()">添加附件</a></td>
+    </tr>
+
+</table>
+
+</body>
+</html>

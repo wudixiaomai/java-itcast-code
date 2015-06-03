@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script src="doc.js" type="text/javascript"></script>
+<script type="text/javascript">
+/*
+1，先每一个省或者直辖市内的城市或者区。
+	进行封装。可以使用数组。
+	
+2，让每一个城市数组和省建立对应关系。
+	在第一个菜单中，每一个城市都有对应的角标。
+	可以用每一个角标和城市数组相对应。
+	这就需要定义个二维数组。
+	
+3，获取当前被选中的省的角标。
+	去查二维数组。
+
+4，将小数组中的元素封装到option项中。
+	并将option项添加到二级菜单中。
+	
+	
+
+*/
+function selcity()
+{
+
+	//定义二维数组
+	var arr = [['--选择城市--'],['海淀区','朝阳区','东城区','西城区']
+				,['沈阳','大连','鞍山','抚顺']
+				,['济南','青岛','烟台','淄博']
+				,['石家庄','保定','廊坊','沧州']];
+				
+				
+	var selNode = byId("sel");	
+	var subSelNode = byId("subsel");
+	
+	//可以直接将子菜单的长度置为0.
+	subSelNode.options.length = 0;
+	
+	/*
+	for(var x=0;x<subSelNode.options.length; )
+	{
+		//alert(x+"..."+subSelNode.options[x].innerText+"...."+subSelNode.options.length);
+		subSelNode.removeChild(subSelNode.options[x]);
+	}
+	*/
+	
+	var citys = arr[selNode.selectedIndex];
+	
+	
+	for(var x=0; x<citys.length; x++)
+	{
+		var optNode = document.createElement("option");
+		optNode.innerText = citys[x];
+		
+		subSelNode.appendChild(optNode);
+	}	
+}
+
+</script>
+</head>
+<body>
+<!--
+二级联动菜单
+
+-->
+
+<select onchange="selcity()" id="sel">
+
+	<option>--选择省市--</option>
+    <option>北京</option>
+    <option>辽宁</option>
+    <option>山东</option>
+    <option>河北</option>
+</select>
+<select id="subsel">
+	<option>--选择城市--</option>
+</select>
+</body>
+</html>

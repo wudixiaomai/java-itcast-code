@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+<script type="text/javascript">
+//演示Date对象。
+var xx = [3,4,6];
+alert(xx);
+
+
+var d = new Date();
+
+//为了简化对象的调用。可以使用with的形式的with(d)
+var year = d.getYear();
+var num= d.getMonth()+1;
+
+//var month = num>9?num:"0"+num;
+var month = get1(num);
+
+var n = d.getDate();
+
+//var date = n>9?n:"0"+n;
+var date = get1(n);
+
+var day = get2(d.getDay());
+
+
+
+
+
+function get1(num)
+{
+	return num>9?num:"0"+num;
+}
+
+function get2(day)
+{
+	var arr = ['星期日','星期一','星期二','星期三','星期四','星期五','星期六'];
+	
+	return arr[day];
+}
+
+
+alert(year+"年"+month+"月"+date+"日"+day);
+
+</script>
+
+
+
+<script type="text/javascript">
+
+/*
+Javascript中已有的对象
+*/
+
+var str = "abcde";
+
+var x = str.bold();
+
+//document.write(x);
+var y = str.fontcolor("red");
+
+//alert(y);
+
+var z = str.fontsize(7);
+//alert(z);
+
+var q = str.link("http://www.qq.com");
+
+//alert(q);
+
+var s1 = str.substr(1,3);
+var s2 = str.substring(1,3);
+
+//alert("s1="+s1+"--------s2="+s2);
+
+
+</script>
+</body>
+</html>

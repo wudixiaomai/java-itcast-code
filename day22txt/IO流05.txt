@@ -1,0 +1,345 @@
+IO包中的其他对象：
+1，打印流。
+	PrintStream：
+		是一个字节打印流，System.out对应的类型就是PrintStream。
+		它的构造函数函数可以接收三种数据类型的值。
+		1，字符串路径。
+		2，File对象。
+		3，OutputStream。
+
+	PrintWriter：
+		是一个字符打印流。构造函数可以接收四种类型的值。
+		1，字符串路径。
+		2，File对象。
+			对于1，2类型的数据，还可以指定编码表。也就是字符集。
+
+		3，OutputStream
+		4，Writer
+			对于3，4类型的数据，可以指定自动刷新。
+			注意：该自动刷新值为true时，只有三个方法可以用：println,printf,format.
+		
+	//如果想要既有自动刷新，又可执行编码。如何完成流对象的包装？
+	PrintWriter pw = 
+		new PrintWriter(new OutputStreamWriter(new FileOutputStream("a.txt"),"utf-8"),true);
+
+	//如果想要提高效率。还要使用打印方法。
+	PrintWriter pw = 
+		new PrintWriter(new BufferdWriter(new OutputStreamWriter(new FileOutputStream("a.txt"),"utf-8")),true);
+
+
+-------------------------------------------------------
+2，管道流。
+	PipedInputStream
+	PipedOutputStream
+	特点：
+		读取管道流流和写入管道流可以进行连接。
+		连接方式：
+		1，通过两个流对象的构造函数。
+		2，通过两个对象的connect方法。
+
+		通常两个流在使用时，需要加入多线程技术，也就是让读写同时运行。
+		注意；对于read方法。该方法是阻塞式的，也就是没有数据的情况，该方法会等待。
+	参考：Pipedstream.java
+---------------------------------------------------------
+
+3，RandomAccessFile：
+	该对象并不是流体系中的一员。
+	该对象中封装了字节流，同时还封装了一个缓冲区(字节数组)，通过内部的指针来操作数组中的数据。
+
+	该对象特点：
+	1，该对象只能操作文件，所以构造函数接收两种类型的参数。
+		a，字符串路径。
+		b，File对象。
+	2，该对象既可以对文件进行读取，也可以写入。
+	   在进行对象实例化时，必须要指定的该对象的操作模式，r rw等。
+
+	该对象中有可以直接操作基本数据类型的方法。
+
+	该对象最有特点的方法：
+	skipBytes():跳过指定的字节数。
+	seek()：指定指针的位置。
+	getFilePointer()：获取指针的位置。
+	通过这些方法，就可以完成对一个文件数据的随机的访问。
+
+	想读哪里就读哪里，想往哪里写就往哪里写。
+
+	该对象功能，可以读数据，可以写入数据，如果写入位置已有数据，会发生数据覆盖。也就是可以对数据进行修改。
+
+	在使用该对象时，建议数据都是有规则的。或者是分段的。
+
+	注意；该对象在实例化时，如果要操作的文件不存在，会自动建立。
+	如果要操作的文件存在，则不会建立，如果存在的文件有数据。
+	那么在没有指定指针位置的情况下，写入数据，会将文件开头的数据覆盖。
+
+
+	可以用于多线程的下载，也就是通过多线程往一个文件中同时存储数据。
+
+----------------------------------------------------------------
+
+序列流。也称为合并流。
+
+SequenceInputStream:
+	特点：可以将多个读取流合并成一个流。这样操作起来很方便。
+	原理：其实就是将每一个读取流对象存储到一个集合中。最后一个流对象结尾作为这个流的结尾。
+
+	两个构造函数：
+	1，SequenceInputStream(InputStream in1,InputStream in2)
+		可以将两个读取流合并成一个流。
+	2，SequenceInputStream(Enumeration<? extends InputStream> en)
+		可以将枚举中的多个流合并成一个流。
+	
+	作用：可以用于多个数据的合并。
+		
+	注意：因为Enumeration是Vector中特有的取出方式。而Vector被ArrayList取代。
+	所以要使用ArrayList集合效率更高一些。那么如何获取Enumeration呢？
+
+	ArrayList<FileInputStream > al = new ArrayList<FileInputStream>();
+
+	for(int x=1; x<4; x++)
+		al.add(new FileInputStream(x+".txt"));
+	
+	final Iterator<FileInputStream> it = al.iterator();
+
+	Enumeration<FileInputStream> en = new Enumeration<FileInputStream>()
+	{
+		public boolean hasMoreElements()
+		{
+			return it.hasNext();
+		}
+		public FileInputStream nextElement()
+		{
+			return it.next();
+		}
+	};
+		
+	//多个流就变成了一个流，这就是数据源。
+	SequenceInputStream sis = new SequenceInputStream(en);
+	
+	//创建数据目的。
+	FileOutputStream fos = new FileOutputStream("4.txt");
+
+	byte[] buf = new byte[1024*4];
+	
+	int len = 0;
+
+	while((len=sis.read(buf))!=-1)
+	{
+		fos.write(buf,0,len);
+	}
+
+	fos.close();
+	sis.close();
+
+
+	//如果要一个对文件数据切割。
+
+	一个读取对应多了输出。
+	FileInputStream fis = new FileInputStream("1.mp3");
+
+	FileOutputStream fos  = null;
+
+	byte[] buf = new byte[1024*1024];//是一个1m的缓冲区。
+
+	int len = 0;
+	int count = 1;
+
+	while((len=fis.read(buf))!=-1)
+	{
+		fos = new FileOutputStream((count++)+".part");
+		fos.write(buf,0,len);
+
+		fos.close();
+	}
+	fis.close();
+
+	//这样就是将1.mp3文件切割成多个碎片文件。
+
+	想要合并使用SequenceInputStream即可。
+
+
+	对于切割后，合并是需要的一些源文件的信息。
+	可以通过配置文件进行存储。该配置可以通过键=值的形式存在。
+	然后通过Properties对象进行数据的加载和获取。
+
+---------------------------------------------------------------------
+
+对象的序列化。
+
+ObjectInputStream
+ObjectOutputStream
+
+可以通过这两个流对象直接操作已有对象并将对象进行本地持久化存储。
+存储后的对象可以进行网络传输。
+
+	两个对象的特有方法：
+	ObjectInputStream
+		Object readObject():该方法抛出异常：ClassNotFountException。
+	ObjectOutputStream
+		void writeObject(Object)：被写入的对象必须实现一个接口:Serializable
+					否则会抛出：NotSerializableException 
+
+
+	Serializable：该接口其实就是一个没有方法的标记接口。
+			用于给类指定一个UID。该UID是通过类中的可序列化成员的数字签名运算出来的一个long型的值。
+			只要是这些成员没有变化，那么该值每次运算都一样。
+
+			该值用于判断被序列化的对象和类文件是否兼容。
+		
+			如果被序列化的对象需要被不同的类版本所兼容。可以在类中自定义UID。
+			定义方式：static final long serialVersionUID = 42L;
+	
+	注意：对应静态的成员变量，不会被序列化。
+		对应非静态也不想被序列化的成员而言，可以通过transient关键字修饰。
+
+	通常，这两个对象成对使用。
+
+--------------------------------------------------------------------
+操作基本数据类型的流对象。
+	DataInputStream
+		DataInputStream(InputStream);
+		操作基本数据类型的方法：
+		int readInt():一次读取四个字节，并将其转成int值。
+		boolean readBoolean():一次读取一个字节。
+		short readShort();
+		long readLong();
+		剩下四个不写了，你懂！
+
+		String readUTF():按照utf-8修改版读取字符。注意，它只能读writeUTF()写入的字符数据。
+
+	DataOutputStream
+		DataOutputStream(OutputStream):
+		操作基本数据类型的方法:
+		writeInt(int)：一次写入四个字节。
+			注意和write(int)不同。write(int)只将该整数的最低一个8位写入。剩余三个8位丢弃。
+		writeBoolean(boolean);
+		writeShort(short);
+		writeLong(long);
+		剩下四个不写了，你也懂！
+
+		writeUTF(String):按照utf-8修改版将字符数据进行存储。只能通过readUTF读取。
+
+	通常只要操作基本数据类型的数据。就需要通过DataStram进行包装。
+
+	通常成对使用。
+
+----------------------------------------------------------
+
+操作数组的流对象。
+	1，操作字节数组
+		ByteArrayInputStream
+
+		ByteArrayOutputStream
+			toByteArray();
+			toString();
+			writeTo(OutputStream);
+
+
+	2，操作字符数组。
+		CharArrayReader
+		CharArrayWriter
+
+	对于这些流，源是内存。目的也是内存。
+
+	而且这些流并未调用系统资源。使用的就是内存中的数组。
+	所以这些在使用的时候不需要close。
+
+	操作数组的读取流在构造是，必须要明确一个数据源。所以要传入相对应的数组。
+
+	对于操作数组的写入流，在构造函数可以使用空参数。因为它内置了一个可变长度数组作为缓冲区。
+
+	
+	这几个流的出现其实就是通过流的读写思想在操作数组。
+
+	类似的对象同理：
+	StringReader，
+	StringWriter。
+
+----------------------------------------------------------
+
+
+编码转换：
+	在io中涉及到编码转换的流是转换流和打印流。
+	但是打印流只有输出。
+
+	在转换流中是可以指定编码表的。
+	默认情况下，都是本机默认的码表。GBK. 这个编码表怎么来的？System.getProperty("file.encoding");
+
+	
+	常见码表：
+	ascii:美国标准信息交换码。使用的是1个字节的7位来表示该表中的字符。
+
+	ISO8859-1:拉丁码表。使用1个字节来表示。
+
+	GB2312:简体中文码表。
+	GBK：简体中文码表，比GB2312融入更多的中文文件和符号。
+
+	unicode:国际标准码表。都用两个字节表示一个字符。
+	UTF-8：对unicode进行优化，每一个字节都加入了标识头。
+
+
+	编码转换：
+	字符串	-->字节数组  ：编码。通过getBytes(charset);
+	字节数组-->字符串 ： 解码。通过String类的构造函数完成。String(byte[],charset);
+
+	
+	如果编错了，没救！
+	如果编对了，解错了，有可能还有就！
+
+	String s = "你好";
+	//编码。
+	byte[] b = s.getBytes("GBK");
+
+	//解码。
+	String s1 = new String(b,"iso8859-1");
+	System.out.println(s1);//????
+
+	//想要还原。
+	/*
+	对s1先进行一次解码码表的编码。获取原字节数据。
+	然后在对原字节数据进行指定编码表的解码。
+	*/
+	byte[] b1 = s1.getBytes("iso8859-1");
+
+	String s2 = new String(b1,"gbk");
+
+	System.out.println(s2);//你好。
+
+	这种情况在tomcat服务器会出现。
+	因为tomcat服务器默认是iso8859-1的编码表。
+	所以客户端通过浏览器向服务前通过get提交方式提交中文数据时，
+	服务端获取到会使用ISO8859-1进行中文数据的解码。会出现乱码。
+	这时就必须要对获取的数据进行iso8859-1编码。然后在按照页面指定的编码表进行解码。即可
+
+	而对于post提交，这种方法也通用。但是post有更好的解决方式。
+	request.setCharacterEncoding("utf-8");即可。
+	所以建立客户端提交使用post提交方式。
+
+
+
+
+	
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

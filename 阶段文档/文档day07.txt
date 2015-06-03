@@ -1,0 +1,189 @@
+
+抽象类：
+	当事物具备了共性功能但是功能主体不一致的时候，
+	也可以向上抽取，只抽取方法声明。
+	那么该方法没有主体，需要被一个关键字来标识，abstract 。
+	就成了抽象方法。
+	抽象发一定存在与抽象类中。那么所在类也要被abstract修饰。
+
+	特点：
+	1，抽象类不可以被new关键字实例化，因为调用抽象方法没意义。
+	2，子类需要覆盖抽象类中所有的抽象方法后，才可以被实例化。
+
+	注意：
+	1，抽象类中有构造函数。是用于给子类进行初始化的。
+	2，抽象类中可以没有抽象方法，那么该存在的目的就是不让其实例化。
+	3，抽象类和一般类的定义描述是一样的，不一样的是抽象类中可以存放抽象方法，还有就是不可以实例化。
+	
+	abstract关键字和哪些关键字不能共存。
+	1，final，
+	2，static，
+	3，private。
+
+-----------------------------------------------------
+
+接口：
+	特点：
+	1，接口用于功能的扩展。
+	2，接口其实就是对外暴露的规则。
+	3，接口的出现降低了藕合性。
+	比如：笔记本usb接口，主板的pci接口。mp3，手机，插排。
+
+	好处：
+	接口的出现，保留了多继承的机制，用多实现来表示。
+	而且接口可以多继承接口。
+	一个类在继承一个类的同时，可以实现多个接口。
+
+	代码规则：
+	使用interface关键字定义的。编译后生成的是.class文件。
+	接口中通常的成员：常量。抽象方法。
+	而且这些成员的有固定的修饰符。
+	常量：public static final。
+	方法：public abstract
+	interface Demo
+	{
+		int x= 3;
+		void show();.//不些这些固定修饰符，系统会自动加上。
+	}
+	但是要注意，复写接口中的方法的时候，一定要加上public。
+
+	类与接口之间是实现关系implements。
+	一个类必须实现接口中所有的方法后，才可以被实例化，否则该类还是一个抽象类。
+
+
+----------------------------------------
+
+	抽象类和接口的不同。
+	学员示例。
+
+	abstract class XueYuan
+	{
+		public void sleep()
+		{}
+
+		public abstract  void study();
+		
+	}
+
+	interface Play
+	{
+		void play();
+	}
+
+	class Zhangsan extends XuYuan implements Play
+	{
+		public void study(){}
+		public void play(){}		
+	}
+
+	问题领域。在分析事物时，值考虑该事物领域内的内容。
+	那么对于打球方法，并不是该领域的基本方法。这时把该功能扩展出去。通过接口来完成。
+
+
+
+	球员示例。
+	abstract class QiuYuan
+	{
+		abstract void play();
+
+	}
+	interface Study
+	{
+		void study();
+	}
+
+	class Wangwu extends QiuYuan implements Study
+	{
+		void play(){}
+		void study(){}
+	}
+
+	抽象类可以定义定义体系。接口用于扩展。
+
+	
+------------------------------------------------------
+
+模版方法设计模式：
+	当定义功能时，一部分明确，一部分不明确，可以将不明确的内容留给子类去实现。
+
+	abstract class Template
+	{
+		final void show()
+		{
+			System.out.println("show start");
+			code();
+			System.out.println("show end");
+		}
+		abstract void code();//不一定非要抽象啊，可以有默认实现。
+	}
+	class SubTemp extends Template
+	{
+		void code()
+		{
+			System.out.println("show code");
+		}
+	}
+
+	main()
+	{
+		new SubTemp().show();
+	}
+
+
+	-----------------------------
+	接口的应用：
+	编写一个项目，该项目应用到了数据库(mysql)
+	到了后期，软件有了新的需求，使用Oracle数据库。
+		
+	对数据库的操作常见的四种操作，增 删 改 查。
+	class SqlOperate
+	{
+		public void add()
+		{
+			mysql code;
+		}
+		public void del()
+		{
+			mysql code;
+		}
+	}
+
+	换成oracle就需要该动SqlOperate该类中的方法内容。
+	后期维护不建议该动代码，灾难。
+
+	在前期分析的时候，就应该考虑到这样需求。
+	为了后期扩展方便，留有扩展余地，进行功能的扩展。
+
+	interface SqlDao
+	{
+		public void add();
+		public void del();
+	}
+	class MySqlOperate implements SqlDao
+	{
+		public void add()
+		{
+			mysql code;
+		}
+		public void del()
+		{
+			mysql code;
+		}
+	}
+	到了后期变成oracle时，
+	只需要在定义一个类去重新实现接口即可。
+	class OracleSqlOperate implements SqlDao
+	{
+		public void add()
+		{
+			Oracle code;
+		}
+		public void del()
+		{
+			Oracle code;
+		}
+	}
+
+
+---------------------------------------------------------
+

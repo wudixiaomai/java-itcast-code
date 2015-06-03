@@ -1,0 +1,423 @@
+
+集合：
+	用于存储对象的可变长度的容器。
+
+因为容器中的数据结构不同，所以出现了容器的体系，也就是不断的向上抽取。
+
+Collection：该接口中定义了集合的共性方法。
+	1，添加：boolean add(obj)
+	2，删除: 
+		boolean remove(obj);
+		void  clear();
+	3，判断: 
+		boolean contains(obj)
+		boolean isEmpty():判断容器中是否有元素，依据的是size方法。
+	4，获取: Iterator iterator():迭代器。
+	5，交集：retainAll(Collection)； al.retainAll(al1);  //将al集合中只保留与al1集合共同的元素。
+	6，个数: int size();
+	7，转成数组： T[] toArray(T[] t):
+
+
+	|--List:有序，可以重复，有角标。
+	|--Set:无序，不可以重复。
+
+
+---------------------------------------
+	List：中特有的方法。依据角标进行操作的元素的方法。
+		1，添加(插入):add(index,obj)
+		2，删除：remove(index);
+		3，获取：get(index);
+		4，索引：
+			indexOf(obj);
+			lastIndexOf(obj);
+		5，取子列表：subList(start,end);
+		6，修改：set(index,obj);
+		7，list集合支持列表迭代器ListIterator：
+			Iterator在迭代时，只能对元素进行获取(next())和删除(remove())的操作。
+			对于Iterator的子接口ListIterator在迭代list集合时，还可以对元素进行添加(add(obj))，修改set(obj)的操作。
+			
+
+	List：
+		|--Vector: 底层是数组数据结构，jdk1.0出现，线程是同步的。被jdk1.2版本后出现的ArrayList替代，因为效率低。
+		|--ArrayList:底层是数组数据结构，jdk1.2出现，线程是不同步的。查询的速度快。
+		|--LinkedList: 底层是链表数据结构，线程是不同步的。增删的速度很快。
+				可以使用该集合去模拟出 队列(先进先出) 或者 堆栈(后进先出) 数据结构。
+		
+		
+		Vector：该集合支持一种特有的取出方式：枚举(Enumeration)
+			枚举的功能和迭代器的功能是一致的。
+			因为枚举的功能方法名称过长，被迭代器取代。
+
+		LinkedList：特有的方法。
+			addFirst():	-->jdk1.6 offerFirst();
+			addLast():	-->jdk1.6 offerLast();
+
+			getFirst();	-->jdk1.6 peekFirst();
+			getLast():	-->jdk1.6 peekFirst();
+
+			removeFirst():	-->jdk1.6 pollFirst();
+			removeLast():	-->jdk1.6 pollFirst();
+
+			对于获取和删除，如果容器中没有元素，get remove会抛出异常 NoSuchElementException。
+			到了1.6的新方法，容器中没有元素，返回null;
+
+
+--------------------------------------------------------------
+
+	Set：该集合中没有特有的方法，直接继承自Collection。
+		|--HashSet：数据结构是：哈希表。如何保证元素唯一性的呢？
+				通过元素的两个方法：hashCode(),equals().
+				判断元素是否相同，先要判断元素的hashCode值是否一致，
+				只有在该值一致的情况下，才会去判断equals方法。
+				注意：复写hashCode方法时，尽量依据元素的判断相同的条件来定义每一个元素的哈希值。
+				例：public int hashCode()
+				{
+					reutrn name.hashCode()+age*36;//尽量保证哈希值唯一性。
+				}
+			
+			|--LinkedHashSet：该子类基于哈希表又融入了链表。可以Set集合进行增删提高效率。
+			
+		|--TreeSet: 数据结构是：二叉树。如何保证元素唯一性的呢？
+				通过比较方法的return 0来判断元素是否相同。
+				treeSet可以对Set集合中的元素进行排序。
+				排序的两种方式：
+				一，让元素自身具备比较性。
+					也就是元素需要实现Comparable接口，覆盖compareTo方法。
+					这种方式也作为元素的自然排序，也可称为默认排序 。
+				二，让容器自身具备比较性，自定义比较器。
+					需求：当元素自身不具备比较性，或者元素自身具备的比较性不是所需要的。
+					那么这时只能让容器自身具备。
+					定义一个类实现Comparator接口，覆盖compare方法。
+					并将该接口的子类对象作为参数传递给TreeSet集合的构造函数。
+				当Comparable比较方式，及Comparator比较方式同时存在，以Comparator比较方式为主。
+
+				注意：在覆盖compareTo方法，或者compare方法时，
+					必须要明确比较的主要条件相等时，需要参阅次要条件。
+
+
+		技巧：
+		如何判断这些容器的数据结构？
+		通过每一个容器的名称即可明确其数据结构：
+		ArrayList:	数组 array。
+		LinkedList:	链表：link。
+		HashSet:	哈希表：hash。
+		TreeSet:	二叉树：tree。
+
+
+		看到array，就要想到角标。
+		看到link，就要想到first，last。
+		看到hash，就要想到hashCode,equals.
+		看到tree，就要想到两个接口。Comparable，Comparator。
+
+
+---------------------------------------------------------------------
+	迭代器：Iterator。
+	所有Collection集合共性的取出方式。
+
+	每一个容器都有取出功能。这些功能定义都是一样，只不过实现的具体方式不同。因为每一个容器的数据结构不一样。
+	所以这些定义的声明就进行了抽取，Iterator接口。
+	而每一个容器都在其内部对该接口进行了内部类的实现。
+	也就是将取出方式的细节进行封装。通过iterator方法对外提供了一个取出元素的对象。
+
+	迭代器就如同。抓布娃娃的夹子。
+
+	在使用时，通常通过两个方法来完成。
+	1，判断容器中是否有元素。hasNext
+	2，取出元素。next.
+
+	需要取出所有元素时，可以通过循环，java建议使用for循环。
+	因为可以对内存进行一下优化。
+	ArrayList　al = new ArrayList();
+	al.add("haha1");
+	al.add("haha2");
+	
+	for(Iterator it = al.iterator(); it.hasNext() ; )
+	{
+		String s = (String)it.next();
+		System.out.println(s);
+
+		//System.out.println(it.next()+".."+in.next());不要这样写。
+	}
+	注意：在迭代时，next方法每调用一次，内部指针就会自定往下走。
+		在循环，next方法调用一次即可。
+
+	JDK1.5以后，认为还可以对迭代器进行一下简化。
+	所以出现了增强的for循环。
+
+	ArrayList<String>　al = new ArrayList<String>();
+	al.add("haha1");
+	al.add("haha2");
+	for(String s : al)
+	{
+		System.out.println(s);
+	}
+
+	一定要知道的就是：集合中其实存储的都是对象的引用。
+			而迭代器取出的也是集合中的对象应用。
+		集合中可以直接存储基本数据类型。
+		因为自动装箱拆箱，会将基本数据类型都先封装成对象保证类后才存入集合。
+
+	al.add(3);//al.add(new Integer(3));
+
+----------------------------------------------------------------------
+	
+Map:一次存入一对元素，以键值对形式存在，必须保证键的唯一性。
+	1，添加：v put(k,v):返回的是被覆盖的Value，如果键没有重复，返回的是null。
+	2，删除：
+		remove(key);
+		clear();
+	3，获取：v get(key);
+		也可以用于判断键是否存在的情况。当指定的键不存在的时候，返回的是null。
+		对于HashMap集合，可以存入null键null值。
+		hm.put("haha",null);
+		hm.get("haha");==>null.//要注意一下。
+
+	4，判断：
+		containsKey(key);
+		containsValue(value);
+		isEmpty();
+	5，长度：size();
+	6，取出：原理：将map集合转成Set集合后，在通过迭代器取出。
+		Set<k> keySet()：将map集合中所有的键取出存入set集合。在通过get方法获取键对应的值。
+		Set<Map.Entry<k,v>> entrySet()：将map集合中的键值映射关系打包成一个对象Map.Entry对象。
+						将该对象存入set集合。取出是可以通过Map.Entry对象的getKey，getValue获取其键和值。
+	7，获取所有的值。
+		Collection<v> values();
+
+	Map：
+		|--Hashtable:底层是哈希表数据结构，线程是同步的，不可以存入null键，null值。效率较低，被HashMap替代。
+		|--HashMap:底层是哈希表数据结构，线程是不同步的，可以存入null键，null值。
+			   要保证键的唯一性，需要覆盖hashCode方法，和equals方法。
+
+			   |--LinkedHashSet：该子类基于哈希表又融入了链表。可以Map集合进行增删提高效率。
+
+		|--TreeMap:底层是二叉树数据结构。可以对map集合中的键进行排序。
+			   需要使用Comparable或者Comparator进行比较排序。return 0，来判断键的唯一性。
+
+		
+		其实set集合，底层使用的就是map集合。
+	
+	Map集合中有一个特殊的对象是可以和IO对象相结合的：Properties。它是Hashtable的子类。
+	该集合对象不存在泛型，键和值都是字符串。
+
+	什么时候使用map集合？当对象之间存在着映射关系时，就要先想到map集合。
+
+
+-------------------------------------------------------------------
+	
+	集合框架中的工具类：特点：该工具类中的方法都是静态的。
+	Collections：常见方法：
+		1，对list进行二分查找：前提该集合一定要有序。
+			int binarySearch(list,key);//要求list集合中的元素都是Comparable的子类。
+			int binarySearch(list,key,Comparator);
+		2，对list集合进行排序。
+			sort(list);
+			sort(list,comaprator);
+		3，对集合取最大值或者最小值。
+			max(Collection)
+			max(Collection,comparator)
+			min(Collection)
+			min(Collection,comparator)
+		4，对list集合进行反转。
+			reverse(list);
+		5，对比较方式进行强行逆转。
+			Comparator reverseOrder();
+			Comparator reverseOrder(Comparator);
+		6，对list集合中的元素进行位置的置换。
+			swap(list,x,y);
+		7，对list集合进行元素的替换。如果被替换的元素不存在，那么原集合不变。
+			replaceAll(list,old,new);
+		8，可以将不同步的集合变成同步的集合。
+			Set synchronizedSet(Set<T> s) 
+			Map synchronizedMap(Map<K,V> m) 
+			List synchronizedList(List<T> list) 
+		
+
+		需求：替换list集合中部分元素为指定元素。
+		public  void myFill(List list,int start,int end,Object obj)
+		{
+			for(int x=start; x<end; x++)
+			{
+				list.set(x,obj);
+			}
+		}
+	------------------------------------
+	
+	Arrays:用于对数组操作的工具类。
+		1，binarySearch(int[])
+		   binarySearch(double[])。。。
+		2，sort(int[])
+		   sort(char[])....
+		3，toString(int[]).....:将数组变成字符串。
+		4，copyOf();复制数组。
+		5，copyOfRange():复制部分数组。
+		6，equals(int[],int[]);比较两个数组是否相同。
+		
+		7，List asList(T[]);将数组变成集合。
+			这样可以通过集合的操作来操作数组中元素，
+			但是不可以使用增删方法，add，remove。因为数组长度是固定的，会出现UnsupportOperationExcetion。
+			可以使用的方法：contains，indexOf。。。
+			如果数组中存入的基本数据类型，那么asList会将数组实体作为集合中的元素。
+			如果数组中的存入的应用数据类型，那么asList会将数组中的元素作为集合中的元素。
+
+		
+		如果想要将集合变数组：
+		可以使用Collection中的toArray方法。
+		传入指定的类型数组即可，该数组的长度最好为集合的size。
+
+			
+-------------------------------------------------------------------------
+
+在JDK1.5版本之后出现一个新特性。
+
+泛型：
+	是出现一个安全机制。
+	好处：
+	1，将运行时期出现的问题(ClassCastException)转移到了编译时期。
+	2，避免了强制转换的麻烦。
+
+格式：通过<>的形式接收指定的类型。
+
+	也就是在定义集合容器时，要先明确该集合存入的元素类型。
+
+
+	1，泛型类。泛型定义在类上，在new对象的时候传入具体类型。该类型作用于整个类。
+
+		class Demo<T>
+		{
+			public void show(T t){}
+		}
+
+	2，泛型方法。泛型定义在方法上，该泛型只在方法上有效。
+
+		class Demo 
+		{
+			public <T> void show(T t)
+			{}
+		}
+		
+		泛型即定义在类上又定义在方法上。
+		class Demo<T>
+		{
+			public <Q> void show(Q q)
+			{}
+			public void function(T t)
+			{}
+		}
+	
+		注意：当方法被静态修饰时，静态不可以访问类上定义的泛型。
+			而且在静态方法上定义泛型时，泛型只能定义在static关键字之后。
+
+	3，泛型接口。泛型定义在接口上。
+		interface Demo<T>
+		{
+			void show(T t);
+		}
+
+		//1,使用接口时明确具体类型。
+		class DemoImpl implements Demo<String>
+		{
+			public void show(String s){}
+		}
+		
+		//2，使用接口时，不明确具体类型，需要建立接口的子类对象在明确。
+		class DemoImpl<T> implements Demo<T>
+		{
+			public void show(T t)
+			{
+				System.out.println(t);
+			}
+		}
+
+		DemoImpl<String> di = new DemoImpl<String>();
+		d1.show("haha");
+
+	泛型的限定：
+	通配符：？
+		public  void show(List<?> list)
+		{
+			
+		}
+	可以对类型进行限定范围。
+	？extends E: 接收E类型或者E的子类型。
+	? super E: 接收E类型或者E的父类型。
+
+	泛型嵌套：
+	<T extends Object & Comparable<? super T>> 
+	在定义类T，并限定T的类型范围。
+	T类型必须是Object的子类，并该类型实现了Comparable接口。
+
+
+	泛型的细节：
+	1，保证左右两变泛型一致。
+	2，在泛型的方法中，不可以使用该泛型类型的体特有方法。
+		可以使用Object类中的方法。
+	
+-------------------------------------------------------------------
+	
+	JDK1.5的新特性：
+	1，可变参数。
+		简化数组参数的定义。
+		public void show(int[] arr)
+		{}
+
+		public void show(int... arr)
+		{
+		}
+		注意：可变参数要定义在参数列表的最后。
+	2，静态导入。
+		简化静态方法的书写。
+		import static java.lang.System.*;
+
+		System.out.println("hello");
+		out.println("hello");
+
+		import static java.util.Collections.*;
+
+		Collections.sort(list);
+		sort(list);
+		max(collection);
+	
+	为简化书写而存在的两个特性。
+
+
+
+---------------------------------------------------
+
+集合练习：
+	1，去除ArrayList中的重复元素。要求存入的是自定义元素如Person。
+	2，定义 自定义元素存入HashSet集合。刻意存入相同元素。
+	3，对自定义元素进行排序。
+	4，获取字符串中每一个字母出现的次数。"df3g6h-j+kl" 
+		if(chs[x]>='a' && chs[x]<='z' || chs[x]>='A' && chs[x]<='Z')
+	5，定义一个列表容器，可以使用LinkedList完成。
+
+集合的常见问题：
+	1，ArrayList和Vector的区别：
+	2，HashMap和Hashtable的区别
+	3，Collection和Collections的区别。
+
+----------------------------------------------------
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+

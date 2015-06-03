@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script type="text/javascript" src="doc.js"></script>
+<script type="text/javascript">
+function getSum()
+{
+	/*
+	1，获取所有商品对象。
+	2，判断被选中的商品对象。
+	3，对被选中的商品对象的金额进行求和。
+	4，将和显示到span区域中。
+	*/
+	
+	var its = byName("it");
+	
+	var sum = 0;
+	for(var x=0; x<its.length; x++)
+	{
+		if(its[x].checked)
+			sum = sum + parseInt(its[x].value);
+	}
+	
+	byId("sum").innerHTML = sum+"元";
+	
+}
+
+function checkAll()
+{
+	var allitNode = byName("allit")[0];
+	
+	var its = byName("it");
+	
+	for(var x=0; x<its.length; x++)
+	{
+		its[x].checked = allitNode.checked;
+	}
+}
+</script>
+</head>
+
+<body>
+
+<input type="checkbox" name="allit" onclick="checkAll()" />全选<br />
+<input type="checkbox" name="it" value="3000" />笔记本电脑3000元<br />
+<input type="checkbox" name="it" value="3000" />笔记本电脑3000元<br />
+<input type="checkbox" name="it" value="3000" />笔记本电脑3000元<br />
+<input type="checkbox" name="it" value="3000" />笔记本电脑3000元<br />
+<input type="checkbox" name="it" value="3000" />笔记本电脑3000元<br />
+<input type="checkbox" name="it" value="3000" />笔记本电脑3000元<br />
+<input type="button" value="总金额是：" onclick="getSum()" /><span id="sum"></span>
+</body>
+</html>

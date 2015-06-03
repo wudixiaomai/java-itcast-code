@@ -1,0 +1,45 @@
+1，在编辑器中中定义类并编写所需代码。
+
+	/*
+	需求：定义一个hello world小程序。
+	思路：
+	1，通过class关键字定义一个类。
+	2，为了让该类独立运行，在类中定义个main函数。
+	3，为了和计算机互动，定义输出语句。让计算机帮我们打印一些信息。
+
+	代码其实就是思想的一种体现形式。
+
+	*/
+
+
+
+	class Demo//定义一个demo类。
+	{
+
+		//保证程序的独立运行。
+		public static void main1(String[] args)
+		{
+			//输出语句
+			System.out.println("hello world");
+		}
+	}
+
+
+
+
+2，打开dos命令行，要对已有的java文件进行编译。需要使用bin目录下的java工具。
+
+3，在dos命令行中切换到java文件所在目录。
+
+4，通过javac工具对java文件编译。
+	如果没有报错，说明编译成功，生成class文件。
+	javac java文件名.java
+
+5，使用java工具对该类进行运行。
+	java 类名(不带class扩展名)
+	NoClassDefFoundError：类名错误。或在当前目录下没有这个类，以及在classpath路径下没有这个类。
+
+	NoSuchMethodError：该类缺少主函数。不可以独立运行。
+
+
+	

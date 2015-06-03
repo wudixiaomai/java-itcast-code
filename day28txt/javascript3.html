@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+
+<script type="text/javascript">
+/*
+//数组的定义。
+var arr = [3,5,7];
+
+//长度为4的数组。
+var arr1 = new Array(4);
+arr1[0] = 9;
+
+//alert(typeof(arr1[1])=='undefined');
+
+printArray(arr1);
+
+*/
+function printArray(arr)
+{
+	for(var x=0; x<arr.length; x++)
+	{
+		document.write(arr[x]+",");
+	}
+	document.write("<br/>");
+}
+
+/*
+javascript的数组的特性。
+
+1,js中的数组是可变长度的。相对与java中的集合。
+
+2，js的数组可以存放任意类型的数据。但是建议为了方便操作，还是单一类型为主。
+
+*/
+
+
+var arr = new Array(2);
+
+arr[0] = 9;
+arr[4] = 8;
+
+//printArray(arr);
+
+
+var arr1 = [3,"abc",true,99.88,'kk'];
+
+printArray(arr1);
+
+
+
+//javascript的二维数组
+var arrs = [[3,4],[1,7,4]];
+
+
+
+function sort(arr)
+{
+	for(var x=0; x<arr.length-1; x++)
+	{
+		for(var y=x+1; y<arr.length; y++)
+		{
+			if(arr[x]>arr[y])
+			{
+				swap(arr,x,y);
+			}
+		}
+	}
+}
+
+function swap(arr,x,y)
+{
+	var temp = arr[x];
+	arr[x] = arr[y] ;
+	arr[y]= temp
+}
+
+
+var array = [5,1,2,7,8,23,6];
+
+printArray(array);
+
+sort(array);
+
+printArray(array);
+</script>
+
+</body>
+</html>

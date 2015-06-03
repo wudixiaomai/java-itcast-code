@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<style type="text/css">
+
+#newsid ul{
+	list-style:none;
+	}
+
+#newslist li{
+	float:left;
+	width:130px;
+
+	}
+#newslist li ul{
+		margin:0px;
+		padding:0px;/**/
+		}
+	
+#newslist li ul li{
+	line-height:25px;
+	}
+#newslist li a{
+	display:block;
+	color:#FFFFFF;
+	background-color:#0066CC;
+	text-decoration:none;
+	line-height:25px;
+	text-align:center;
+	
+	}
+#newslist li a:hover{
+	color:#0066CC;
+	background-color:#999999;
+	}
+#newslist li ul li a{
+	color:#000000;
+	background-color:#0099FF;
+	}
+	
+#newslist li ul li a:hover{
+	color:#0066FF;
+	background-color:#999999;
+	}
+#newslist li ul{
+	display:none;
+	}
+</style>
+
+<script type="text/javascript">
+function list(liNode)
+{
+	var ulNode = liNode.getElementsByTagName("ul")[0];
+	
+	with(ulNode.style)
+	{
+		display = display=="block"?"none":"block";
+	}
+}
+</script>
+
+</head>
+
+<body>
+
+<!--
+制作一个下拉菜单。
+
+1，封装数据
+2，定义基本样式
+-->
+
+<div id="newsid">
+	
+    <ul id="newslist">
+    	<li onmouseover="list(this)" onmouseout="list(this)">
+        	<a href="javascript:void(0)">社会新闻</a>
+            <ul>
+            	<li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>
+                <li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>
+                <li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>
+                <li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>             
+              
+            </ul>
+        </li>
+        <li onmouseover="list(this)" onmouseout="list(this)">
+        	<a href="javascript:void(0)">娱乐新闻</a>
+            <ul>
+            	<li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>
+                <li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>
+                <li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>
+                <li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>             
+              
+            </ul>
+        </li>
+        <li onmouseover="list(this)" onmouseout="list(this)">
+        	<a href="javascript:void(0)">体育新闻</a>
+            <ul>
+            	<li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>
+                <li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>
+                <li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>
+                <li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>             
+              
+            </ul>
+        </li>
+        <li onmouseover="list(this)" onmouseout="list(this)">
+        	<a href="javascript:void(0)">财经新闻</a>
+            <ul>
+            	<li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>
+                <li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>
+                <li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>
+                <li><a href="http://www.itcast.cn">社会新闻内容摘要</a></li>             
+              
+            </ul>
+        </li>
+    </ul>
+	
+</div>
+
+
+</body>
+</html>

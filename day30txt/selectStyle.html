@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style type="text/css">
+
+#textarea{
+	height:80px;
+	width:290px;
+	background-color:#FFCC00;
+	margin:0px 0px 20px 0px;
+	}
+#text{
+	width:290px;
+	background-color:#CCCCCC;
+	margin:20px 0px 0px 0px;
+	}
+</style>
+
+
+<script type="text/javascript" src="doc.js"></script>
+<script type="text/javascript">
+
+function change()
+{
+	var divNode_1 = byId("textarea");
+	var divNode_2 = byId("text");
+	
+	var selNode = byName("sel")[0];
+	
+	
+	var value = selNode.options[selNode.selectedIndex].value;
+	
+	divNode_1.style.textTransform = value;
+	
+	divNode_2.innerHTML = "text-transform : "+value+" ;";
+}
+
+</script>
+</head>
+
+<body>
+<div id="textarea">
+Good good study, Day day up!
+</div>
+
+<select name="sel" onchange="change()">
+
+	<option value="none">--text-transform--</option>
+    <option value="uppercase">uppercase</option>
+    <option value="lowercase">lowercase</option>
+</select>
+
+<div id="text">
+	text-transform : none ;
+</div>
+</body>
+</html>

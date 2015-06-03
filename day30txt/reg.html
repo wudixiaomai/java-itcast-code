@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<script type="text/javascript">
+
+
+var isuser = false,ispsw = false;
+function checkUser(userNode)
+{
+
+
+	var name = userNode.value;
+	
+	//var reg = new RegExp("^[a-z]{4}$","i");
+	var reg = /^[a-z]{4}$/i;
+	
+	var spanNode = document.getElementById("userspan");
+	
+	if(reg.test(name))
+	{
+		spanNode.innerHTML = "用户名正确".fontcolor("green");
+		isuser = true;
+	}
+	else
+	{
+		spanNode.innerHTML = "用户名错误".fontcolor("red");
+		isuser = false;
+		
+	}
+		
+	/*
+	var x = name.match(reg);
+	
+	if(x)
+		alert("用户名正确");
+		
+	else
+		alert("用户错误");
+		
+	*/
+		
+}
+
+
+function checkPsw(pswNode)
+{
+	var word  = pswNode.value;
+	
+	var reg = /^\d{4}$/;
+	
+	var spanNode = document.getElementById("pswspan");
+	
+	if(reg.test(word))
+	{
+		spanNode.innerHTML = "密码正确".fontcolor("green");
+		ispsw = true;
+	}
+	else
+	{
+		spanNode.innerHTML = "密码错误".fontcolor("red");
+		ispsw = false;
+	}
+}
+
+function checkForm()
+{
+	//event.returnValue = false;
+	
+	alert(isuser+"..."+ispsw);
+	if(isuser && ispsw)
+		event.returnValue = true;
+	else
+		event.returnValue = false;
+	
+}
+
+</script>
+</head>
+
+<body>
+
+<!--
+表单校验
+-->
+
+<form onsubmit="checkForm()">
+	用户名称：<input type="text" name="user" onblur="checkUser(this)" />
+    <span id="userspan"></span>
+    <br />
+    输入密码：<input type="text" name="psw" onblur="checkPsw(this)" />
+    <span id="pswspan"></span>
+    <br />
+    <input type="submit" value="提交数据"  />
+
+</form>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+图形界面编程：
+	java将图形界面所需要的组件都存在了java.awt包中以及后期基于awt出现javax.swing包中。
+	awt:不跨平台，依赖平台的显示样式及效果。
+	swing:跨平台。
+
+	Component:
+		|--Button		
+		|--Label：想要往组件中添加文本信息，需要先将文本封装成组件。使用的就是label对象。
+		|--Container:是构件的一个特殊子类，特点可以存储组件。
+			|--Panel:面板，不单独存在。需要存入window中。
+			|--Window
+				|--Frame：用于创建窗体。
+				|--Dialog
+					|--FileDialog：有两个模式，LOAD(默认) SAVE用于对文件进行选取和指定。
+		|--TextComponent
+			|--TextField
+			|--TextArea
+	
+	定义图形界面的简单操作。
+	import java.awt.*;
+	import java.awt.event.*;
+	class MyFrame
+	{
+		private Frame f;
+		private Button b;
+		MyFrame()
+		{
+			init();
+		}
+
+		public void init()
+		{
+			f = new Frame("my Frame");
+			f.setBounds(300,200,600,500);
+			f.setLayout(new FlowLayout());
+
+			b = new Button("my button");
+
+			f.add(b);
+
+			myEvent();
+
+			f.setVisible(true);
+		}
+		private void myEvent()
+		{
+			f.addWindowListener(new WindowAdapter()
+			{
+				public void windowClosing(WindowEvent e)
+				{
+					System.exit(0);
+				}
+			});
+
+			/*
+			点击按钮也可以实现关闭程序。
+			1，确定事件源。button。
+			2，确定事件，ActionEvent  MouseEvent 
+			3，将活动事件注册到事件源上。注册时就需要先知道监听器。ActionListener。
+			4，使用事件源的addXXXListener方法将XXXListener的子类对象作为参数传递给add方法即可完成监听动作。
+			5，覆盖监听接口或者监听接口的子类监听适配器中的方法。定义事件对应的动作处理方式。
+			*/
+
+			b.addActionListener(new ActionListener()
+			{
+				public void  actionPerformed(ActionEvent e)
+				{
+					System.exit(0);
+				}
+			});
+		}
+	}
+
+	另一种方式： 自定义Frame的子类对象也可以创建窗体。
+
+	----------------
+	事件监听机制。
+	组成部分：
+	1，事件源：其实就是awt中的组件。
+	2，事件：就是event包中的所有Event对象。
+	3，监听器：就是event包中的所有Listener接口。
+	4，事件处理方式：其实就是在定义可以触发事件的动作内容。
+
+	鼠标事件：MouseEvent。
+		可通过该事件对象的 getClickCount()==2判断鼠标双击动作。
+
+	键盘事件：KeyEvent。
+		getKeyCode():获取按钮对应的code。
+		getKeyChar():返回的是键上的字母或数字符号，注意返回的是一个字符。查看不了shift。
+		getKeyText(code):返回的多字母按键。
+
+		如何实现ctrl+Enter组合键。
+		if(e.isControlDown() && e.getKeyCode()==KeyEvent.VK_ENTER)
+
+	
+	--------------
+	菜单：
+	MenuComponent
+		|--MenuBar:菜单栏。菜单栏中存放菜单Menu。
+		|--MenuItem
+			|--Menu:菜单,其中存放菜单项MenuItem
+
+	MenuBar mb = new MenuBar();
+
+	Menu m = new Menu("文件");
+
+	MenuItem mi = new MenuItem("打开");
+
+	m.add(mi);
+	mb.add(m);
+
+	frame.setMenuBar(mb);
+
+	//创建子菜单。
+
+	MenuBar mb = new MenuBar();
+
+	Menu m = Menu("文件");
+	Menu demo = Menu("demo");
+
+	MenuItem mi = new MenuItem("打开");
+
+	MenuItem sub = new MenuItem("sub");
+
+	demo.add(sub);
+
+	m.add(demo);
+	m.add(mi);
+	mb.add(m);
+
+	frame.setMenuBar(mb);
+
+	菜单对应的事件也是ActionEvent，对应的监听器ActionListener。
+
+
+	双击jar执行。
+	注意，自定义配置文件时，需要Main-Class:空格包名.主函数类名回车
+
+
+

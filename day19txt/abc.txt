@@ -1,0 +1,85 @@
+/*
+转换流。
+
+INPUTSTREAMREADER:将字节转成字符。
+OUTPUTSTREAMWRITER：将字符转成字节。
+
+特点：可以融入指定编码表。
+
+
+*/
+
+IMPORT JAVA.IO.*;
+
+CLASS  TRANSSTREAMDEMO
+{
+	PUBLIC STATIC VOID MAIN(STRING[] ARGS) THROWS IOEXCEPTION
+	{
+		//字节读取流。(SYSTEM.IN默认是键盘设备。)
+		//INPUTSTREAM IN = SYSTEM.IN;
+
+		//想要使用READLINE方法，读取键盘录入一行。
+		//但该方法是BUFFEREDREADER特有方法。
+		//如何让BUFFEREDREADER的READLINE方法可以操作键盘录入的字节数据呢?
+		//那么可以将字节转成字符流就可以使用该方法。
+		//这时就要用到了转换流。
+		//INPUTSTREAMREADER ISR = NEW INPUTSTREAMREADER(IN);
+		
+
+
+		//BUFFEREDREADER BUFR = NEW BUFFEREDREADER(ISR);
+
+		//三据代码合并成依据代码。这句代码要记住，只要一提到键盘录入，就要使用该代码。
+
+		BUFFEREDREADER BUFR = 
+			NEW BUFFEREDREADER(NEW INPUTSTREAMREADER(SYSTEM.IN));
+
+
+
+
+		//在键盘录入时，通常都要自定义一下结束标记。
+
+		STRING LINE = NULL;
+
+		WHILE((LINE=BUFR.READLINE())!=NULL)
+		{
+			IF("OVER".EQUALS(LINE))
+				BREAK;
+			SYSTEM.OUT.PRINTLN(LINE.TOUPPERCASE());
+		}
+
+		BUFR.CLOSE();
+
+
+	}
+
+	/*
+	读取键盘录入的一行数据，并进行判断，如果是OVER，程序结束。
+	否则，打印一行数据的大写形式。
+	发现代码和READLINE方法的原理很相似，
+	既然IO中已有这样的方法，可不以直接使用呢？
+
+	*/
+	PUBLIC STATIC VOID READIN()THROWS IOEXCEPTION
+	{
+		STRINGBUILDER SB = NEW STRINGBUILDER();
+
+		WHILE(TRUE)
+		{
+			INT CH = SYSTEM.IN.READ();
+			IF(CH=='\R')
+				CONTINUE;
+			IF(CH=='\N')
+			{
+				STRING S = SB.TOSTRING();
+				IF("OVER".EQUALS(S))
+					RETURN ;
+				SYSTEM.OUT.PRINTLN(S.TOUPPERCASE());
+				SB.DELETE(0,SB.LENGTH());
+			}
+			ELSE
+				SB.APPEND((CHAR)CH);
+		}
+	}
+}
+

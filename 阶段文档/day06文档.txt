@@ -1,0 +1,203 @@
+static关键字。
+特点：成员修饰符，可修饰成员变量和成员函数。
+	被静态修饰的数据在方法区中。
+好处：
+1，被静态修饰后，可以被对象共享。
+2，可以直接被类名调用。
+
+弊端：
+1，生命周期过长。
+2，静态方法有访问局限性，只能访问静态成员。
+
+
+注意事项：
+1，静态方法只能访问静态成员。
+2，静态方法中不可以定义this，super。
+3，主函数是静态的。
+
+---------------------------------------------
+
+main函数：
+java Demo//加载当前目录下，或者classpath指定目录下的Demo.class文件。
+如果该文件存在，在该文件找main方法。并执行其中的代码。
+public static void main(String[] args)
+{
+	
+}
+jvm默认传递是 new String[0];
+
+想要给主函数传递自定义的参数。可以在执行该类的同时加入参数。
+java Demo haha hehe heihei
+
+jvm就会把haha hehe heihei这些参数封装成一个字符串数组。
+
+
+--------------------------------------------
+设计模式：对某一类问题行之有效的解决办法。
+
+单例设计模式：
+解决什么问题：保证类在内存中的对象唯一性。
+
+可以通过三步来完成：
+1，将构造函数私有化。
+2，建立本类私有并静态的对象。
+3，通过公有的静态方法返回该对象。让其他类获取。
+
+如：超人的例子。
+
+单例有两种写法：
+1，饿汉式：
+class Single
+{
+	private static Single s = new Single();
+	private Single(){}
+	public static Single getInstance()
+	{
+		return s;
+	}
+}
+
+2，懒汉式：
+class Single
+{
+	priavte static Single s = null;
+	private Single(){}
+	public static Single getInstance()
+	{
+		if(s==null)
+			s = new Single();
+		return s;
+	}
+}
+
+两种方式的区别：
+饿汉式：类一加载，对象就已经建立。
+懒汉式：只有调用了getInstance方法的时候才进行对象建立。
+注意:
+懒汉式：当被并发访问时，容易出现线程安全问题。
+需要通过synchronized同步关键字解决安全问题，但是会降低效率。
+
+一般建议使用饿汉式。
+
+-----------------------------------------------
+
+静态代码块：
+特点：随着类的加载而执行，仅执行一次。
+	优先于主函数执行。
+
+作用：给类进行初始化。
+
+System.java源代码中。
+
+class Demo
+{
+	//随着类加载就执行了。最先执行部分。
+	static
+	{
+		System.out.println("a");
+	}
+
+
+	//实例代码块。随着对象的建立执行，优先于构造函数执行。
+	//而且，建立一个对象就会执行。开发并不常见。
+	{
+		System.out.println("b");
+	}
+	
+	//构造函数。在实例代码块之后执行。
+	Demo()
+	{
+		System.out.println("c");
+	}
+}
+
+class Main
+{
+	main()
+	{
+		Demo d = new Demo();
+		Demo d1 = new Demo();
+	}
+}
+
+//结果：a b c b c。
+
+
+---------------------------------------------
+
+内部类：
+其实就是把类定义在另外一个类中。
+
+好处；内部可以直接访问外部类中的所有成员，因为内部类持有一个外部类的对象引用。外部类名.this;
+
+什么时候定义内部类呢？
+描述事物的时候该事物中还有事物的时候，内部事物就可以通过内部类的形式完成描述。
+
+注意：
+内部类如果定义在外部类的成员位置上，
+可以被成员修饰符所修饰。private  static。
+被静态修饰后，内部类的访问范围变小，只能访问外部类中静态的成员。
+一般不建议将内部类定义静态。
+
+只有当内部类中定义了static成员时，该内部类一定要定义成静态。
+
+当内部类在外部类的局部位置上。
+要想访问局部变量，改变量必须被final修饰。将该变量变成一个常量。
+
+
+class Outer
+{
+	class Inner{}
+
+	public void show()
+	{
+		new Inner();
+	}
+	public static void main(String[] args)
+	{
+		new Inner();//nono,因为主函数是静态的，只能访问静态成员，要想建立内部类对象，内部类需要进行static修饰。	
+	}
+}
+
+class Outer
+{
+	class Inner_1       
+	{
+		void show()   //访问时 new Outer().new Inner_1().show();
+		{}
+	}
+
+	static class Inner_2
+	{
+		void show()    //访问时 new Outer.Inner_2().show();
+		{}
+	}
+
+	static class Inner_3
+	{
+		static void show()  //访问时 Outer.Inner_3.show();
+		{}
+	}
+}
+
+class OuterDemo
+{
+	main()
+	{
+	
+		//直接访问内部类Inner_1中的成员。
+		new Outer().new Inner_1().show();
+
+		//直接访问内部类Inner_2中的成员。
+		new Outer.Inner_2().show();
+
+		//直接访问内部类Inner_3中的成员。
+		Outer.Inner_3.show();
+
+		这三种作为了解掌握。
+
+	}
+}
+
+-----------------------------------------------
+

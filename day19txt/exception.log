@@ -1,0 +1,3 @@
+2010Äê10ÔÂ18ÈÕ 16:31:34
+java.lang.ArithmeticException: / by zero
+	at ExceptionLogDemo.main(ExceptionLogDemo.java:13)

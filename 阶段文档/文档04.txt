@@ -1,0 +1,84 @@
+
+进制转换练习：
+	将一个十进制数转成指定的进制。
+
+	思路：其实就是将该十进制数在内存中的二进制形式表现出来。
+		如果要表现十六进制，只需要每四个二进制取一次，获取十六进制即可。
+
+	首先通过数组形式，将每一次获取进制位进行临时存储。
+	可以通过查表法的方式完成。
+	思路：将已有的一些固定数据进行列出，每次运算后，通过运算的结果，去在表中找对应的数据。
+
+	private static String trans(int num,int base,int offset)
+	{
+		if(num==0)
+			return "0";
+		
+		char[] chs = {'0','1',...'F'};
+		
+		char[] arr = new char[32];
+
+		int pos = arr.length;
+
+		while(num!=0)
+		{
+			int temp = num & base;
+			arr[--pos] = chs[temp];
+			num = num >>> offset;
+
+		}
+
+		/*String str = "";
+		for(int x=pos; x<arr.length; x++)
+		{
+			str+=arr[x];
+		}
+		return str;*/
+		//return new String(arr,pos,arr.length-pos);
+	}
+
+	public static String toBin(int num)
+	{
+		return trans(num,1,1);
+	}
+
+------------------------------------
+
+二维数组：数组中的数组。
+
+int[][] arr = new int[3][2];
+System.out.println(arr[0][0]);//0;
+System.out.println(arr[0]);//角标为0的小数组的哈希值。[I@234535
+
+
+int[][] arr = new int[3][];
+System.out.println(arr[0]);//null
+
+
+什么时候使用二维数组呢？
+数据多了要用容器存储，而数据按照其特点分出了多个部分，每个部分中还有一堆数据。
+这是可以先将部分封装成小数组，在将这些小数组封装到二维数组中。
+
+二维数组在遍历的时候要使用嵌套循环。
+
+int[][] arr = {{4,1},{5,2,6,9}};
+
+
+int[] x[],y;
+
+int[] x[];
+
+int[] y;
+
+
+y = x[0];
+y=x;
+y=x[0][0];
+y[0] = x[0];
+y[0] = x[0][0];
+
+
+
+System.arraycopy(src,srcpos,dest,destpos,len);//数组的复制。
+
+数组的排序。Arrays.sort([]);

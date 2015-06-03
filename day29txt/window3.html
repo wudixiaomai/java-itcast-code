@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<script type="text/javascript">
+function demoevent()
+{
+	var src = event.srcElement;
+	
+	alert(src.value);
+	//src.value= "我要改变按钮的文字";
+}
+
+function demoKey()
+{
+	//alert(event.keyCode);
+	var code = event.keyCode;
+	if(code>=48 && code<=57)
+	{
+		alert("输入正确");
+	}
+	else
+	{
+		alert("非法字符");
+		event.returnValue = false;
+	}
+}
+</script>
+</head>
+
+<body>
+
+<input type="text" onkeypress="demoKey()" />
+
+
+<input type="button" value="演示window的event对象" onclick="demoevent()" />
+</body>
+</html>

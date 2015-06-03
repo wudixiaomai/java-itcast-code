@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+
+<!--
+public void getFiles(File dir,int level)
+{
+
+	System.out.println(getSpace(level)+dir.getName());
+    level++;
+	File[] files = dir.listFiles();
+    
+    for(int x=0;x<files.length; x++)
+    {
+    	if(files[x].isDirectory())
+        	getFiles(files[x],level);
+        else
+        	System.out.println(getSpace(level)+files[x].getName());
+    }
+}
+
+public String getSpace(int level)
+{
+	StringBuilder sb = new StringBuilder();
+    for(int x=0; x<level ; x++)
+    {
+    	sb.append("|--");
+    }
+    return sb.toString();
+}
+-->
+<script type="text/javascript">
+
+var info = "";
+
+function getNodes(node,level)
+{
+	info+= getLevel(level)+node.nodeName+"...."+node.nodeType+"....."+node.nodeValue+"<br/>";
+	level++;
+	var arr = node.childNodes;
+	
+	for(var x=0; x<arr.length; x++)
+	{
+		if(arr[x].hasChildNodes())
+			getNodes(arr[x],level);
+		else
+			info+= getLevel(level)+arr[x].nodeName+"...."+arr[x].nodeType+"....."+arr[x].nodeValue+"<br/>";
+	}
+}
+
+
+function getLevel(level)
+{
+	var str = "";
+	for(var x=0; x<level ;x++)
+	{
+		str+="|--";
+	}
+	return str;
+}
+
+function getAllNodes()
+{
+
+	var b = confirm("你真的要遍历所有节点吗？");
+	
+	if(!b)
+		return ;
+	var winObj = open("","_blank");
+	getNodes(document,0);
+	
+	winObj.document.write('<link rel="stylesheet" href="div.css" />');
+	winObj.document.write("<div>"+info+"</div>");
+	
+
+}
+</script>
+
+</head>
+
+<body>
+
+<input type="button" value="获取所有的节点并带着层次" name="but" onclick="getAllNodes()" />
+
+<div>
+	div区域
+</div>
+
+
+<table id="tabid">
+	<tr>
+    	<td>单元格一</td>
+        <td>单元格二</td>
+    </tr>
+    <tr>
+    	<td>单元格三</td>
+        <td>单元格四</td>
+    </tr>
+</table>
+<a href="javascript:void(0)">一个超链接</a>
+
+<span>
+span区域</span>
+
+</body>
+</html>

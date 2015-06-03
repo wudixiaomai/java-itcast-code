@@ -1,0 +1,71 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+
+<form>
+
+	<!--文本框: type=text -->
+    用户名：<input type="text" name="user" value="" /><br />
+    <!--密码框：type=password-->
+    密码：<input type="password" name="psw" /><br />
+    <!-- 性别: type=radio
+    
+    对于多个单选框，一次只能选择其中的一个。所以要先多个单选框分到一个组中。
+    其实就是给input标签定义name属性。让name属性值一致即可。
+     -->
+    
+    性别：<input type="radio" name="sex" value="nan" />男 
+    		<input type="radio" name="sex" checked="checked" value="nv" />女<br />
+	<!--   复选框 type=checkbox -->
+    技术：<input type="checkbox" name="tech" value="java"  />JAVA 
+    		<input type="checkbox" name="tech" value="html" /> html 
+            <input type="checkbox" name="tech" value="css" />css<br />
+    
+    <!--
+   	提交数据:type=submit
+    	提交按钮：默认可以将form组件中的所有的数据打包提交给指定目的地。
+    清除数据: type=reset
+    	将表单组件的内容进行还原到初始状态。
+    
+    在定义表单组件时，通常都会定义两个属性，name和value。
+    这两个属性有两个功能，
+    第一个：方便于服务端获取客户端提交的数据。
+    第二个：方便于Javascript获取表单中的组件。
+    
+    -->
+    
+    <input type="file" /><br />
+    <input type="hidden" name="id" value="88" /><br />
+    <input type="image" src="11.jpg" />
+    
+    <input type="submit" value="提交数据" /><input type="reset" value="清除数据" />
+    
+    <input type="button" value="这是一个按钮" onclick="alert('hahah')" />
+    <br />
+    
+    
+    <!--下拉菜单-->
+    <select name="country" multiple="multiple" size="2">
+    	<option value="none">--选择国家--</option>
+        <option value="cn" selected="selected">中国</option>
+       	<option value="en">英国</option>
+        <option value="usa">美国</option>
+    </select>
+    
+    <textarea cols="40" rows="8">
+    	haha
+    </textarea>
+</form>
+
+
+
+
+
+
+</body>
+</html>

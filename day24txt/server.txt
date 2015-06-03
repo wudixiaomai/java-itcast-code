@@ -1,0 +1,100 @@
+IMPORT JAVA.NET.*;
+
+/*
+
+
+UDP协议：
+1，面向无连接。
+2，不可靠协议，容易丢包。
+3，速度快。
+4，包体积有限制，64K以内。
+
+通常，聊天，在线视频，凌波。
+
+
+
+
+建立一个UPD的发送端。
+用于发送数据。
+
+1,建立UPDSOCKET服务。
+2，将数据封装成数据包。
+3，通过SOCKET服务的SEND方法。将数据包发出。
+4，关闭资源。
+*/
+
+CLASS  SENDDEMO
+{
+	PUBLIC STATIC VOID MAIN(STRING[] ARGS) THROWS EXCEPTION
+	{
+
+		//1,建立UDPSOCKET服务。
+		DATAGRAMSOCKET DS = NEW DATAGRAMSOCKET();
+
+		//2,将数据封装成数据包。要使用DATAGRAMPACKET对象
+		//2.1先将要发送的数据变成字节数组。在指定发送的目的地和端口。
+		//2.2将这些信息作为参数传递给数据包对象的构造函数。
+
+		BYTE[] BUF = "如果你收到了这条信息，恭喜你，你可以去吃饭了。".GETBYTES();
+
+
+		INETADDRESS IP = INETADDRESS.GETBYNAME("192.168.1.255");
+
+		DATAGRAMPACKET DP = NEW DATAGRAMPACKET(BUF,BUF.LENGTH,IP,9527);
+		WHILE(TRUE)
+		{
+		//3,使用SOCKET服务的SEND方法将数据包发送出去。
+		DS.SEND(DP);
+		}
+
+		//4,关闭资源。
+		//DS.CLOSE();
+
+
+	}
+}
+
+
+
+/*
+建立UDP的接收端。
+
+1，建立UDP接收端服务，必须要监听一个端口，因为要明确，哪个端口来的数据是由该应用程序所处理的。
+2，建立一个空的数据包，用于存储接收到数据，
+	将字节数据存储到数据包对象中，可以使用数据包对象的方法获取不同的数据信息。
+3，使用SOCKET服务的RECEIVE方法将接收到的数据存储到数据包中。
+4，通过数据包的方法获取指定数据信息。
+5，关闭资源。
+
+*/
+CLASS RECEDEMO
+{
+	PUBLIC STATIC VOID MAIN(STRING[] ARGS)THROWS EXCEPTION
+	{
+		//1,建立UPDSOCKET服务，监听一个端口。
+		DATAGRAMSOCKET DS = NEW DATAGRAMSOCKET(9527);
+
+		WHILE(TRUE)
+		{
+		//2,建立一个执行大小的数据包，用于存储数据，以便获取。
+		BYTE[] BUF = NEW BYTE[1024];
+		DATAGRAMPACKET DP = NEW DATAGRAMPACKET(BUF,BUF.LENGTH);
+
+		//3,使用SOCKET的RECEIVE方法将数据存储到数据包中。
+		DS.RECEIVE(DP);
+
+		//4,通过数据包对象的方法获取其中的数据。
+		STRING IP = DP.GETADDRESS().GETHOSTADDRESS();
+
+		STRING DATA = NEW STRING(DP.GETDATA(),0,DP.GETLENGTH());
+
+		INT PORT = DP.GETPORT();
+
+		SYSTEM.OUT.PRINTLN(IP+":"+DATA+"::"+PORT);
+		}
+		//5,关闭资源。
+		//DS.CLOSE();
+
+
+	}
+}

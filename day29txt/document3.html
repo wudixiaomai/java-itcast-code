@@ -1,0 +1,233 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script type="text/javascript">
+
+/*
+节点的常见操作。
+1，创建节点。需要通过document对象的createElement.创建的标签型节点。
+	createElement()
+2，添加节点。
+	appendChild():在指定的父节点内容的末尾追加子节点。
+3，插入节点。
+	insertBefore(newNode,childNode):在指定节点前插入新的节点。
+4，替换节点。
+	replaceNode(newNode):将当前节点替换成新节点
+	replaceChild(newNode,childNode):通过父节点的方法，替换指定的子节点。
+5，删除节点。
+	removeChild(childNode):通过父节点删除其中已有的子节点。
+	removeNode(boolean);如果为true，那么会删除自己的同时删自己的子节点。
+6，复制节点。
+	cloneNode(boolean)：如果为true，在克隆该节点的同时，一并克隆其子节点。
+
+
+
+*/
+
+//创建节点。通过document。
+function crtAndApdNode()
+{
+
+	//创建节点
+	var node = document.createElement("input");
+	//node.type = "button";
+	node.setAttribute("type","button");	
+	//var s = node.getAttribute("type");
+	
+	node.setAttribute("value","这是一个新创建的按钮");
+	
+	
+	//想要把新创建的按钮添加到dom树div节点下。作为div节点的字节点存在。
+	//首先要先获取div节点。然后使用div节点的appendChild的方法。
+	var divNode = document.getElementsByTagName("div")[0];
+	
+	divNode.appendChild(node);
+	
+	
+	
+	
+}
+function insertNodeDemo()
+{
+	var node = document.createElement("input");
+	node.setAttribute("type","button");
+	
+	node.setAttribute("value","插入一个新创建的按钮");
+	
+	var divNode = document.getElementsByTagName("div")[0];
+	
+	var butNode = document.getElementsByName("but")[0];
+	//butNode.document.all.but;
+	
+	divNode.insertBefore(node,butNode);
+}
+
+function replaceNodeDemo()
+{
+	var node = document.createElement("input");
+	node.setAttribute("type","button");
+	
+	node.setAttribute("value","一个新创建的按钮--");
+	
+	var divNode = document.getElementsByTagName("div")[0];
+	
+	var butNode = document.getElementsByName("but")[0];
+	
+	
+	//divNode.replaceNode(node,butNode);
+	
+	butNode.replaceNode(node);
+	
+	
+}
+function copyNodeDemo()
+{
+	var divNode = document.getElementsByTagName("div")[0];
+	
+	var divClone = divNode.cloneNode(true);
+	
+	//alert(divClone);
+	document.body.appendChild(divClone);
+	
+}
+function delNodeDemo()
+{
+	
+	var divNode = document.getElementsByTagName("div")[0];
+	
+	var butNode = document.getElementsByName("but")[0];
+	
+	//删除子节点
+	//divNode.removeChild(butNode);
+	
+	//删除节点自身。
+	divNode.removeNode(true);
+	
+	
+}
+
+
+</script>
+
+</head>
+
+<body>
+
+<input type="button" value="演示创建节点并添加节点" onclick="crtAndApdNode()" />
+<input type="button" value="演示插入节点" onclick="insertNodeDemo()" />
+<input type="button" value="演示替换节点" onclick="replaceNodeDemo()" />
+<input type="button" value="演示复制节点" onclick="copyNodeDemo()" />
+<input type="button" value="演示删除节点" onclick="delNodeDemo()" />
+
+
+<hr />
+
+<div>
+这是一个div节点中的文本<br />
+<input type="button" name="but" value="已有的一个按钮节点" onclick="" />
+
+</div>
+<hr color="#FF0000" size="5" />
+
+
+<script type="text/javascript">
+
+function demoText()
+{
+	var newText = document.createTextNode("新创建的文本节点");
+	
+	var divNode = document.getElementById("divid");
+	
+	//divNode.appendChild(newText);
+	var textNode = divNode.childNodes[0];
+	
+	//divNode.replaceChild(newText,textNode);
+	
+	//textNode.replaceNode(newText);
+	//divNode.removeChild(newText);
+}
+
+function demoText2()
+{
+	var divNode = document.getElementById("divid");
+	var text = divNode.innerText;
+	
+	//alert(text);
+	
+	//divNode.innerText = "<font color='red'>新设置的文本</font>";
+	
+	//divNode.innerHTML = "<font color='red'>新设置的文本</font>";
+	
+	//alert("outerHTML:"+divNode.outerHTML);
+	//alert("innerHTML:"+divNode.innerHTML);
+	
+	//divNode.innerHTML = "<input type='button' value='我是一个新按钮' />";
+	//divNode.innerHTML = "<a href='http://www.itcast.cn' >传智播客</a>";
+}
+
+
+</script>
+
+<input type="button" value="演示标签的文本设置和获取" onclick="demoText2()" />
+<div id="divid">
+演示<b>div的区域</b>的文本。
+</div>
+
+
+<hr color="#0033FF" size="5" />
+<script type="text/javascript">
+function getSource()
+{
+	//1,获取源代码文本所属的对象。html，
+	//2,通过html对象outerHTML获取该对象中的html文本。
+	//3，获取文本区域对象。并将获取的文本填充到该文本区域中。
+	
+	var htmlNode = document.documentElement;
+	
+	//alert(htmlNode.nodeName);
+	
+	var text = htmlNode.outerHTML;
+	
+	var areaNode = document.getElementById("areaid");
+	
+	areaNode.innerText = text;
+	
+}
+
+function copyText()
+{
+	var areaNode = document.getElementById("areaid");
+	areaNode.select();
+	document.execCommand("Copy");
+}
+</script>
+<h2>练习:点击按钮获取该页面的源代码，并存储到文本区域中。</h2>
+
+<input type="button" value="练习按钮" onclick="getSource()" />
+<textarea id="areaid" rows="20" cols="70" >
+
+</textarea>
+<input type="button" value="复制文本" onclick="copyText()" />
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

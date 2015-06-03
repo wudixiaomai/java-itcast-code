@@ -1,0 +1,51 @@
+字符串的缓冲区：就是一个容器。
+StringBuffer。JDK1.5版本后，出现了另一个StringBuilder，
+区别：
+StringBuffer：线程安全的。
+StringBuilder：线程不安全的。效率较高。
+
+建议使用StringBuilder。
+
+java升级通常有三个目的：
+1，提高效率。
+2，提高安全性。
+3，简化书写。
+
+
+作为一个容器，它有自己独特的方法：
+1，添加：
+	StringBuilder append(data):只在尾部追加。可以添加基本数据类型6中。还可以添加string，object。
+		注意：如果添加Object，其实将Object的toString结果添加进了缓冲区。
+
+	StringBuilder insert(index,data):是可以在缓冲区任意位置添加数据的。
+
+2，删除：
+	StringBuilder delete(start,end):删除缓冲区中的指定内容范围，包含头，不包含尾。
+			特例：delete(0,sb.length()):清空缓冲区。
+	StringBuilder deleteCharAt(index):删除指定位置的字符。
+
+3，修改：
+	StringBuilder replace(start,end,str):将指定内容范围替换成指定字符串str。
+	void setCharAt(index,char):修改指定位置的字符。
+
+4，获取：
+	int indexOf(str):获取指定字符串在缓冲区中的第一次位置。
+	int lastIndexOf(str):反向获取指定字符串在缓冲区中的第一次位置。
+
+5，反转：
+	StringBuilder reverse():将缓冲区的数据进行反转。
+	原理：其实就是对数组的头尾进行换位。
+
+
+什么时候使用StringBuilder呢？
+当要操作的数据的数据类型不同，以及个数不定时，可以选择StringBuilder，
+但是StringBuilder最终会将这些数据变成字符串。
+
+
+
+-------------------------------------------------
+
+
+
+
+

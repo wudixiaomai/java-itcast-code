@@ -1,0 +1,305 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<style type="text/css">
+
+table{
+	width:500px;
+	}
+table td{
+	padding:3px 0px 3px 5px;
+	border:#0099FF solid 1px;
+	}
+</style>
+
+</head>
+
+<body>
+<script type="text/javascript">
+//动态函数
+var show = new Function("x,y","var sum = x+y; return sum;");
+
+var num = show(4,5);
+alert(num);
+
+function show1(x,y)
+{
+	var sum = x+y;
+	return sum;
+}
+
+
+</script>
+
+
+
+<script type="text/javascript">
+
+
+/*
+函数其他表现形式。
+2，匿名函数：就是函数的一种简写形式。
+
+*/
+/*
+function show()
+{
+	alert("show run");
+}
+
+var demo = show;
+*/
+
+
+var show = function()
+{
+	//alert("hah");
+}
+
+show();
+/*
+多用于代码的封装，
+1，将部分代码封装对封装的结果进行操作。
+2，可以直接作为事件的处理方式存在。
+*/
+
+/*
+function demo()
+{
+	alert("load over");
+}
+
+window.onload = function()
+{
+	alert("hehhee");
+};
+*/
+
+/*
+Javascript支持函数内继续定义函数。
+其实函数就是一个对象。
+*/
+function method(x)
+{
+	return function(y)
+	{
+		return x+y;
+	}
+}
+
+
+var abc = method(3);
+
+var sum = abc(6);
+
+
+//alert(sum);
+
+
+function method2()
+{
+	var abc = function()
+	{
+	
+		alert("abc run");
+	};
+	
+	abc();
+	
+	
+}
+
+//method2();
+
+</script>
+
+
+<script type="text/javascript">
+
+/*
+Javascript函数。
+*/
+//1,定义。
+/*
+function 函数名(参数列表)
+{
+	执行语句；
+	return 返回值;
+}
+*/
+/*
+function show()
+{
+	alert("show run");
+	//return "haha";
+	return;
+	
+}
+
+
+	//s存储show方法运算后的结果。如果show方法没有具体的值返回，那么s的值为undefined.
+var s = show();
+
+alert(s);
+*/
+
+
+
+/*
+function show()
+{
+	alert("show ");
+}
+
+<I></I>
+//var demo = show();//将show方法运算后的返回值赋给demo。
+
+//var demo = show;//demo和show指向了同一个函数对象。
+
+var demo = show;
+
+//alert(demo);
+demo();
+*/
+
+
+/*
+函数的参数传递
+
+Javascript没有java中的重载特性，所以不要定义同名函数。
+虽然定义多参数，可以传递不一定和参数个数的值。
+但是这样做不利于阅读。
+希望按照基本规范。
+
+
+定义js函数的技巧：
+1，明确该功能是否有未知内容参与运算。
+2，该功能运算后的结果。
+
+
+对于函数对象，其中内置了一个对象，用于存储该函数接收到的参数。
+该内置对象就是arguments 
+
+function show()
+{
+	//alert(x+"--++--"+y);
+	for(var x=0; x<arguments.length; x++)
+		alert(arguments[x]);
+}
+
+show(2,3,4,5);
+*/
+
+
+/*
+var a = 3;
+
+function show(a)
+{
+	a = 7;
+}
+
+show(a);
+alert(a);
+*/
+
+</script>
+
+
+
+
+
+
+<script type="text/javascript">
+
+/*
+演示js的语句
+*/
+
+
+//1,if语句
+var x = 3;
+/*
+if(4==x)
+	alert("yes");
+else
+	alert("no");
+*/	
+	
+//(x>1)?alert('haha'):alert('hehe');
+
+
+
+
+//2,switch语句  可以对字符串进行选择。
+
+var str = "abc";
+/*
+switch(str)
+{
+	case 'kk':
+		alert("a");
+		break;
+	case 'abc':
+		alert("b");
+		//break;
+	default:
+		alert("c");
+		
+}*/
+
+
+//3,循环语句 while   do while  for
+/*
+var x = 1;
+
+while(x<3)
+{
+	alert("x="+x);
+	x++;
+	
+}
+*/
+
+for(var x=0; x<3; x++)
+{
+	//alert("x="+x);
+	//document.write("x="+x+"<br/>");
+}
+
+
+
+
+
+//练习：在页面上打印一个99乘法表。
+/*
+document.write("<table>");
+for(var x=1; x<=9; x++)
+{
+	document.write("<tr>");
+	for(var y=1; y<=x; y++)
+	{
+	
+		document.write("<td>");
+		document.write(y+"*"+x+"="+y*x);
+		
+		document.write("</td>");
+	}
+	document.write("</tr>");
+}
+
+document.write("</table>");
+
+*/
+
+
+
+
+</script>
+
+
+</body>
+</html>

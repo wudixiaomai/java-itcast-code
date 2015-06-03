@@ -1,0 +1,132 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<link rel="stylesheet" type="text/css" href="table.css" />
+
+<script type="text/javascript">
+
+function createTable1()
+{
+	//创建一个表格节点。
+	var tabNode = document.createElement("table");
+	
+	
+	//通过表格insertRow方法在表格的行集合中添加一个一的行节点对象。
+	var trNode = tabNode.insertRow();
+	
+	
+	//通过行节点对象的insertCell方法给该行添加一个单元格。
+	var tdNode = trNode.insertCell();
+	
+	tdNode.innerHTML = "<font color='red'>单元格一</font>";
+	
+	
+	//想要把表格添加到已有的dom树的div节点内
+	//1,先获取div节点。
+	//2,在使用div节点appendChild方法。
+	var divNode = document.getElementsByTagName("div")[0];
+	
+	divNode.appendChild(tabNode);
+	
+	
+	
+}
+
+
+function createTable()
+{
+	var tabNode = document.createElement("table");
+	tabNode.setAttribute("id","tabid");
+	
+	var rownum = document.getElementsByName("rownum")[0].value;
+	
+	var colnum = document.getElementsByName("colnum")[0].value;
+	
+	for(var x=1; x<=rownum; x++)	
+	{
+		var tr = tabNode.insertRow();
+		
+		for(var y=1; y<=colnum; y++)
+		{
+			var td = tr.insertCell();
+			
+			td.innerHTML = x+".."+y;
+		}
+	}
+	
+	document.getElementsByTagName("div")[0].appendChild(tabNode);
+	
+	document.getElementsByName("crttab")[0].disabled = true;
+}
+
+
+function delRow()
+{
+	//1,获取到表格对象。
+	var tabNode = document.getElementById("tabid");
+	if(tabNode==null)
+	{
+		alert("表格不存在，你删什么东西");
+		return;
+	}
+	
+	var rownum = document.getElementsByName("delrow")[0].value;
+	
+	if(rownum>=1 && rownum<=tabNode.rows.length)
+	{
+		tabNode.deleteRow(rownum-1);
+	}
+	else
+		alert("你删除的行不存在");
+}
+
+function delCol()
+{
+	/*
+	删除列的原理：
+	其实就是删除每一行中的指定位置的单元格
+	*/
+	var tabNode = document.getElementById("tabid");
+	if(tabNode==null)
+	{
+		alert("表格不存在，你删什么东西");
+		return;
+	}
+	
+	var colnum = document.getElementsByName("delcol")[0].value;
+	
+	if(colnum>=1 && colnum<=tabNode.rows[0].cells.length)
+	{
+		for(var x=0; x<tabNode.rows.length; x++)
+		{
+			tabNode.rows[x].deleteCell(colnum-1);
+		}
+	}
+	else
+		alert("你删除的列不存在");
+			
+	
+}
+
+</script>
+</head>
+
+<body>
+行：<input type="text" name="rownum" />
+列：<input type="text" name="colnum" />
+<input type="button" value="创建表格" name="crttab" onclick="createTable()" />
+<br />
+<input type="text"  name="delrow" />
+<input type="button" value="删除行"onclick="delRow()" />
+<br />
+<input type="text"  name="delcol" />
+<input type="button" value="删除列"onclick="delCol()" />
+
+
+<div>
+</div>
+</body>
+</html>

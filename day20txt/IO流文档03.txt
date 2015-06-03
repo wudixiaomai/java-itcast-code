@@ -1,0 +1,187 @@
+
+字节流的read()方法读取一个字节。为什么返回的不是byte类型，而是int类型呢？
+
+因为read方法读到末尾时返回的是-1.
+而在所操作的数据中的很容易出现连续多个1的情况，而连续读到8个1，就是-1.
+导致读取会提前停止。
+
+所以将读到的一个字节给提升为一个int类型的数值，但是只保留原字节，并在剩余二进制位补0.
+具体操作是：byte&255  or  byte&0xff
+
+对于write方法，可以一次写入一个自己，但接收的是一个int类型数值。
+只写入该int类型的数值的最低一个字节（8位）。
+
+简单说:read方法对读到的数据继续宁提升。write对操作的数据进行转换。
+
+------------------------------------------------------------------
+
+转换流：
+	特点：
+	1，是字节流和字符流之间的桥梁。
+	2，该流对象中可以对读取到的字节数据进行指定编码表的编码转换。
+	
+	什么时候使用呢?
+	1，当字节和字符之间有转换动作时。
+	2，流操作的数据需要进行编码表的指定时。
+
+	具体的对象体现：
+	1，InputStreamReader：字节到字符的桥梁。
+	2，OutputStreamWriter：字符到字节的桥梁。
+
+	这两个流对象是字符流体系中的成员。
+
+	那么它们有转换作用，而本身又是字符流。所以在构造的时候，需要传入字节流对象进来。
+
+	构造函数：
+	InputStreamReader(InputStream):通过该构造函数初始化，使用的是本系统默认的编码表GBK。
+	InputStreamReader(InputStream,String charSet):通过该构造函数初始化，可以指定编码表。
+
+	OutputStreamWriter(OutputStream):通过该构造函数初始化，使用的是本系统默认的编码表GBK。
+	OutputStreamWriter(OutputStream,String charSet):通过该构造函数初始化，可以指定编码表。
+
+	操作文件的字符流对象是转换流的子类。
+	Reader
+		|--InputStreamReader
+			|--FileReader
+
+	Writer 
+		|--OutputStreamWriter
+			|--FileWriter
+
+	转换流中的read方法。已经融入了编码表，
+	在底层调用字节流的read方法时将获取的一个或者多个字节数据进行临时存储，
+	并去查指定的编码表，如果编码表没有指定，
+	查的是默认码表。那么转流流的read方法就可以返回一个字符比如中文。
+	
+	转换流已经完成了编码转换的动作，对于直接操作的文本文件的FileReaer而言，就不用在重新定义了，
+	只要继承该转换流，获取其方法，就可以直接操作文本文件中的字符数据了。
+
+
+	注意：
+	在使用FileReader操作文本数据时，该对象使用的是默认的编码表。
+	如果要使用指定编码表时，必须使用转换流。
+
+	FileReader fr = new FileReader("a.txt");//操作a.txt的中的数据使用的本系统默认的GBK。
+
+	操作a.txt的中的数据使用的也是本系统默认的GBK。
+	InputStreamReader isr = new InputStreamReader(new FileInputStream("a.txt"));
+
+	这两句的代码的意义相同。
+
+	如果a.txt中的文件中的字符数据是通过utf-8的形式编码。
+	那么在读取时，就必须指定编码表。
+	那么转换流必须使用。
+
+	InputStreamReader isr = new InputStreamReader(new FileInputStream("a.txt"),"utf-8");
+
+----------------------------------------------------------------------
+
+流操作的基本规律。
+	1，明确数据源和数据汇。
+		其实是为了明确输入流还是输出流。
+	2，明确操作的数据是否是纯文本数据。
+		其实是为了明确字符流还是字节流。
+	
+	数据源：键盘System.in,硬盘File开头的流对象，内存(数组)。
+	数据汇：控制台System.out,硬盘File开头的流对象，内存(数组)。
+	
+	需求：
+	1，将键盘录入的数据存储到一个文件中。
+		数据源：System.in
+			既然是源，使用的就是输入流，可用的体系有InputStream，Reader。
+			因为键盘录入进来的一定是纯文本数据，所以可以使用专门操作字符数据的Reader。
+			发现System.in对应的流是字节读取流。所以要将其进行转换，将字节转成字符即可。
+			所以要使用Reader体系中：InputStreamReader
+			接下来，是否需要提高效率呢？如果需要，那么就加入字符流的缓冲区：BufferedReader
+			
+			BufferedReader bur = new BufferedReader(new InputStreamReader(System.in));
+
+
+			
+
+		数据汇：一个文件，硬盘。
+			既然是数据汇，那么一定是输出流，可以用的OutputStream,Writer。
+			往文件中存储的都是文本数据，那么可以使用字符流较为方便:Writer.
+			因为操作的是一个文件。所以使用Writer中的FileWriter。
+			是否要提高效率呢？是，那就使用BufferedWriter.
+
+			BufferedWriter bufr = new BufferedWriter(new FileWriter("a.txt"));
+
+		附加需求：希望将这些文本数据按照指定的编码表存入文件中。
+			既然是文本数据，而是还是写入到文件中，那么使用的体系还是Writer。
+			因为要指定编码表，所以要使用Writer中的转换流，OutputStreamWriter。
+			是否要提高效率，是，选择BufferedWriter。
+			注意：虽然是最终是文件，但是不可以选择FileWriter。因为该对象是使用默认编码表。
+			输出转换流要接收一个字节输出流进来，所以要是用OutputStram体系，而最终输出到一个文件中，
+			那么就要使用OutputStream体系中可以操作的文件的字节流对象：FileOutputStream。
+
+			
+
+			//String charSet = System.getProperty("file.encoding");
+			String charSet = "utf-8";
+			BufferedWriter bufw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("a.txt"),charSet);
+
+
+
+			
+
+	2，将一个文本文件的数据展示在控制台上。
+		同上，自己一定要动手。
+
+	3，复制文件。
+		同上，自己一定要动手。
+	这三个都可以独立完成，并写对过程，和代码。那么IO流的操作，哦了！
+
+
+-----------------------------------------------------------------------
+
+	可以和流相关联的集合对象Properties.
+
+	Map
+	  |--Hashtable
+		|--Properties
+	Properties:该集合不需要泛型，因为该集合中的键值对都是String类型。
+		   通常应用于应用程序的配置信息为键值对的配置文件。
+
+
+	1，存入键值对：setPropery(key,value);
+	2，获取指定键对应的值：value getProperty(key);
+	3，获取集合中所有键元素：
+		Enumeration  propertyNames();
+		在jdk1.6版本给该类提供一个新的方法。
+		Set<String> stringPropertyNames();
+	4，列出该集合中的所有键值对，可以通过参数打印流指定列出到的目的地。
+		list(PrintStream);
+		list(PrintWriter);
+		例：list(System.out):将集合中的键值对打印到控制台。
+		    list(new PrintStream("prop.txt")):将集合中的键值对存储到prop.txt文件中。
+	5，可以将流中的规则数据加载进行集合，并称为键值对。
+		load(InputStream):
+		jdk1.6版本。提供了新的方法。
+		load(Reader):
+		注意：流中的数据要是 "键=值" 的规则数据。
+	6，可以将集合中的数据进行指定目的的存储。
+		store(OutputStram,String comment)方法。
+		jdk1.6版本。提供了新的方法。
+		store(Writer ,String comment):
+		使用该方法存储时，会带着当时存储的时间。
+	
+	练习：记录一个程序运行的次数，当满足指定次数时，该程序就不可以在继续运行了。
+	      通常可用于软件使用次数的限定。
+
+
+
+
+		
+
+	
+
+
+	
+
+	
+
+
+	
+
+	

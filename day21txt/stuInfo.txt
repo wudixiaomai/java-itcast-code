@@ -1,0 +1,6 @@
+sunba	270
+zhouqi	210
+lisi	180
+zhsan	160
+zhaol	150
+wangwu	60

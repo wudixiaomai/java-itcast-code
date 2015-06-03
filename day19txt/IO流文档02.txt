@@ -1,0 +1,288 @@
+
+字符流的缓冲区：
+	缓冲区的出现提高了对流的操作效率。
+	原理：其实就是将数组进行封装。
+	对应的对象：
+	BufferedWriter：
+		特有方法：
+			newLine()：跨平台的换行符。
+	BufferedReader：
+		特有方法：
+			readLine():一次读一行，到行标记时，将行标记之前的字符数据作为字符串返回。
+				当读到末尾时，返回null。
+
+	在使用缓冲区对象时，要明确，缓冲的存在是为了增强流的功能而存在，
+	所以在建立缓冲区对象时，要先有流对象存在。
+	其实缓冲内部就是在使用流对象的方法，只不过加入了数组对数据进行了临时存储。为了提高操作数据的效率。
+
+	
+
+	代码上的体现：
+		写入缓冲区对象。
+		//建立缓冲区对象必须把流对象作为参数传递给缓冲区的构造函数。
+		BufferedWriter bufw = new BufferedWriter(new FileWriter("buf.txt"));
+		bufw.write("abce");//将数据写入到了缓冲区。
+		bufw.flush();//对缓冲区的数据进行刷新。将数据刷到目的地中。
+		bufw.close();//关闭缓冲区，其实关闭的是被包装在内部的流对象。
+		
+		读取缓冲区对象。
+		BufferedReader bufr = new BufferedReader(new FileReader("buf.txt"));	
+		String line = null;
+
+		while((line=bufr.readLine())!=null)//按照行的形式取出数据。取出的每一个行数据不包含回车符。
+		{
+			System.out.println(line);
+		}
+		bufr.close();
+	
+	练习：通过缓冲区的形式，对文本文件进行拷贝。
+		
+		public static void main(String[] args)
+		{
+			BufferedReader bufr = new BufferedReader(new FileReader("a.txt"));
+
+			BufferedWriter bufw = new BufferedWriter(new FileWriter("b.txt"));
+
+			String line = null;
+
+			while((line=bufr.readLine())!=null)
+			{
+				bufw.write(line);
+				bufw.newLine();
+				bufw.flush();
+			}
+			
+			bufw.close();
+			bufr.close();
+		}
+
+
+
+	readLine():方法的原理：
+		其实缓冲区中的该方法，用的还是与缓冲区关联的流对象的read方法。
+		只不过，每一次读到一个字符，先不进行具体操作，先进行临时存储。
+		当读取到回车标记时，将临时容器中存储的数据一次性返回。
+
+		既然明确了原理，我们也可以实现一个类似功能的方法。
+
+	class MyBufferedReader
+	{
+		private Reader r;
+
+		MyBufferedReader(Reader r)
+		{
+			this.r = r;
+		}
+		public String myReadLine()throws IOException
+		{
+			//1,创建临时容器。
+			StringBuilder sb = new StringBuilder();
+
+			//2,循环的使用read方法不断读取字符。
+			int ch = 0;
+			while((ch=r.read())!=-1)
+			{
+				if(ch=='\r')
+					continue;
+				if(ch=='\n')
+					return sb.toString();
+				else
+					sb.append((char)ch);
+			}
+			
+			if(sb.length()!=0)
+				return sb.toString();
+			return null;
+		}
+		public void myClose()throws IOException
+		{
+			r.close();
+		}
+	}
+
+	main()
+	{
+		MyBufferedReader myBufr = new MyBufferedReader(new FileReader("a.txt"));
+		String line = null;
+
+		while((line=myBufr.myReadLine())!=null)
+		{
+			System.out.println(line);
+		}
+
+	}
+
+	它的出现基于流并增强了流的功能。
+	这也是一种设计模式的体现：装饰设计模式。
+	对一组对象进行功能的增强。
+
+	该模式和继承有什么区别呢？
+	它比继承有更好的灵活性。
+
+	通常装饰类和被装饰类都同属与一个父类或者接口。
+
+	Writer
+		|--MediaWriter
+		|--TextWriter
+
+	需求：想要对数据的操作提高效率，就用到了缓冲技术。
+		通过所学习的继承特性。可以建立子类复写父类中的write方法。即可
+		
+
+	Writer：不要误解，以下两个对象不存在，只为举例。
+		|--MediaWriter
+			|--BufferedMediaWriter
+		|--TextWriter
+			|--BufferedTextWriter
+
+	当Writer中子类对象过多，那么为了提高每一个对象效率，每一个对象都有 一个自己的子类Buffered。
+	虽然可以实现，但是继承体系变的很臃肿。
+
+	那么是否可以对其进行一下优化呢？
+	其实增期都是在使用缓冲技术。
+	可不可以对缓冲技术进行描述，将需要增强的对象传递给缓冲区即可。
+
+	class BufferdWriter
+	{
+		BufferedWriter(MediaWriter mw)
+		{}
+		BufferedWriter(TextWriter mw)
+		{}
+	}
+	该类虽然完成对已有两个对象的增强。
+	但是当有新的对象出现时，还要继续在该类中添加构造函数。这样不利于扩展和维护。
+	将对这些对象父类型进行操作即可。这就是多态，提高了程序的扩展性。
+	同时BufferedWriter中一样具体write方法，只不过是增强后的write。
+
+	所以BuferedWriter也应该是Writer中的一个子类。
+
+	class BufferedWriter extends Writer
+	{
+		private Writer w;
+		BufferedWriter(Writer w)
+		{
+			this.w = w;
+		}
+	}
+	
+	Writer 
+		|--MediaWriter
+		|--TextWriter
+		|--BufferedWriter
+	这样就会发现装饰设计模式，优化增强功能的部分。比继承要灵活很多。
+
+
+	--------------------------
+
+	可以在读一行的基础上添加一个行号。
+
+	class MyLineNumberReader extends MyBufferedReader
+	{
+		private int number;
+		MyLineNumberReader(Reader r)
+		{
+			super(r);
+		}
+		public String myReadLine()
+		{
+			number++;
+			return super.myReadLine();
+		}
+
+		public void setNumber(int number)
+		{
+			this.number = number;
+		}
+		public int getNumber()
+		{
+			return number;
+		}
+	}
+
+
+----------------------------------------------------
+
+	字节流：
+		抽象基类：InputStream，OutputStream。
+
+		字节流可以操作任何数据。
+
+		注意：字符流使用的数组是字符数组。
+		      字节流使用的数组是字节数组。
+		
+		FileOutputStream fos = new FileOutputStream("a.txt");
+
+		fos.write("abcde");//直接将数据写入到了目的地。
+
+		fos.close();//只关闭资源。
+
+	
+		FileInputStream fis = new FileInputStream("a.txt");
+
+		//fis.available();//获取关联的文件的字节数。
+
+		//如果文件体积不是很大。
+		//可以这样操作。
+
+		byte[] buf = new byte[fis.available()];//创建一个刚刚好的缓冲区。
+						//但是这有一个弊端，就是文件过大，大小超出jvm的内容空间时，会内存溢出。
+
+		fis.read(buf);
+
+		System.out.println(new String(buf));
+
+
+		
+		需求：copy一个图片。
+
+		BufferedInputStream bufis = new BufferedInputStream(new FileInputStream("1.jpg"));
+
+		BufferedOutputStream bufos = new BufferedOutputStream(new FileOutptStream("2.jpg"));
+
+		int by = 0;
+
+		while((by=bufis.read())!=-1)
+		{
+			bufos.write(by);
+		}
+
+		bufos.close();
+		bufis.close();
+
+
+------------------------------------------------------------
+
+目前学习的流对象：
+字符流：
+	FileReader.
+	FileWriter.
+
+	BufferedReader
+	BufferedWriter.
+
+字节流：
+	FileInputStream
+	FileOutputStream
+
+	BufferedInputStream
+	BufferedOutputStream
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

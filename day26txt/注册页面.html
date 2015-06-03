@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+
+
+<!--
+
+表单提交方式：
+最常见的两种：
+get：
+	1，会将提交的信息显示在地址栏中，对于敏感信息不安全。
+    2，地址栏存储的数据量是有限，对于提交大数据，无法完成。
+    3，提交信息封装在数据包的头部，也就是请求消息头之前。
+post：
+	1，不会将提交的信息显示在地址栏中，对敏感信息安全。
+    2，可以提交大体积数据。
+    3，提交信息封装在数据包的尾部，也就是请求头信息之后。
+    
+    
+    还有一个区别：
+    就是在编码上。
+    如果使用get提交。那么tomcat服务端获取到中文数据后，必须要对中文数据进行ISO8859-1的编码后，
+    在进行指定识别中文的码表（GBK或UTF-8）的解码。
+    
+    如果使用post提交中文，以上方法也可以使用，但是麻烦，对post有更简单的解码方式，
+    获取服务端的request对象并使用该对象一个方法setCharacterEncoding(gbk或utf-8)即可。
+    
+    
+   综上所述：对于表单提交，建议大家都使用post完成。
+   
+   对于点击超链接就是get提交。
+   在地址栏输入url地址，也是get提交。
+   
+   
+   客户端和服务端都需要进行信息的校验。，
+   客户端校验：是因为提高用户的体验效果。较少对服务器端的压力。
+   服务端校验：是因为提高服务器的安全性。
+   
+   
+   -->
+    
+    
+  
+  
+<a href="http://192.168.1.253:10002/?user=haha&psw=1&sex=yao&country=buluo&tech=game"  >我要注册</a>
+
+<p></p>    
+    
+
+
+<fieldset>
+<legend>这是注册页面区域</legend>
+<form action="http://192.168.1.253:10002" method="get">
+
+	<table border="1" bordercolor="#0099FF" width="680px" cellpadding="10" cellspacing="0">
+    
+    	<tr>
+        	<th colspan="2">注册页面</th>
+        </tr>
+    	<tr>
+        	<td>用户名称：</td>
+            <td><input type="text" name="user" /></td>
+        </tr>
+        <tr>
+        	<td>输入密码：</td>
+            <td><input type="password" name="psw" /></td>
+        </tr>
+        <tr>
+        	<td>确认密码：</td>
+            <td><input type="password" name="repsw" /></td>
+        </tr>
+        <tr>
+        	<td>性别：</td>
+            <td>
+            	<input type="radio" name="sex" value="nan" checked="checked" />男
+                <input type="radio" name="sex" value="nv" />女
+            </td>
+        </tr>
+        <tr>
+        	<td>技术：</td>
+            <td>
+            	<input type="checkbox" name="tech" value="java" />JAVA
+                <input type="checkbox" name="tech" value="html" />HTML
+                <input type="checkbox" name="tech" value="css" />CSS
+            </td>
+        </tr>
+        <tr>
+        	<td>国家：</td>
+            <td>
+            	<select name="country">
+                	<option value="none">--选择国家--</option>
+                    <option value="cn" selected="selected">中国</option>
+                    <option value="en">英国</option>
+                    <option value="usa">美国</option>
+                </select>
+            </td>
+        </tr>
+        
+        <tr>
+        	<th colspan="2">
+            	<input type="submit" value="提交数据" />
+                <input type="reset" value="清除数据" />
+            </th>
+        </tr>
+    	
+    </table>
+
+</form>
+</fieldset>
+</body>
+</html>

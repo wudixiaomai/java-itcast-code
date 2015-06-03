@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<script type="text/javascript">
+
+
+function demoDoc()
+{
+	var ele = document.documentElement;
+	
+	alert(ele.tagName);
+}
+
+
+/*
+既然有了document代表html文档的对象，那么通过该对象就可以获取到页面中任意的一个节点。
+通过该对象的get方法。
+getElementById():通过标签的id属性值获取指定标签对象，返回的是一个对象。
+getElementsByTagName()：通过指定的标签名称获取标签对象，返回的是该标签对象的数组。
+getElementsByName()：通过标签的name属性的值获取标签对象。返回的也是一个数组。
+
+
+注意：只要是容器型标签都具备一个方法：getElementsByTagName()：
+
+什么时候使用呢？
+document.getElementsByTagName("span"):获取到的是整个html文档中所有(任何层次下)的span标签。
+
+如果只想获取指定范围的span标签对象。
+那么应该先获取这个范围。在通过这个范围对象的getElementsByTagName(“span")获取。
+
+
+每一个节点都有一些共性的属性。
+1，节点都有名称。nodeName
+2，节点都有类型。nodeType
+3，节点都有值。nodeValue
+
+标签型节点类型是 ： 1
+标签中的属性节点类型是： 2
+文本节点的类型是 ： 3
+注释节点的类型是 : 8
+
+属性节点和文本节点，注释节点都是有节点值。
+
+
+*/
+
+function getNode()
+{
+	//var node = document.getElementById("tabid");
+	
+	//alert(node.nodeName+"....."+node.nodeType+"......"+node.nodeValue);
+	
+	//var divNode = document.getElementsByTagName("div")[0];
+	
+	//alert(divNode.nodeName);
+	
+	
+	//var node = document.getElementsByName("but")[0];
+	
+	//alert(node.value);
+}
+
+
+
+function getAllNodes()
+{
+/*
+	var arr = document.all;
+	var info = "";
+	for(var x=0; x<arr.length; x++)
+	{
+		info += arr[x].nodeName+"......"+arr[x].nodeType+"<br/>";
+	}
+	
+	document.write(info);
+	*/
+	/*
+	document.all.name值或者id值 就可以获取到指定的对象。
+	注意：如果name值重复。那么获取的到是一个对象数组。
+		如果id值重复。那么获取的到是一个对象数组。
+	
+	*/
+	//var node = document.all.tabid;
+	
+	//alert(node.nodeName);
+	
+	var arr = document.childNodes;
+	
+	for(var x=0; x<arr.length; x++)
+	{
+		alert(arr[x].nodeName);
+	}
+}
+
+
+</script>
+
+</head>
+
+<body>
+
+
+
+<input type="button" value="演示document对象" name="but" onclick="getAllNodes()" />
+
+<div>
+	div区域
+</div>
+
+
+<table id="tabid">
+	<tr>
+    	<td>单元格一</td>
+        <td>单元格二</td>
+    </tr>
+    <tr>
+    	<td>单元格三</td>
+        <td>单元格四</td>
+    </tr>
+</table>
+<a href="javascript:void(0)">一个超链接</a>
+
+<span>
+span区域</span>
+</body>
+</html>

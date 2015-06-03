@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+
+
+<!--
+表格标签通常用于格式化数据。
+-->
+
+<h2>
+演示表格标签 table<br />
+表格的组成部分：<br />
+标题 caption<br />
+行 tr <br />
+行中的单元格 td  th<br />
+	th: 其实就是对td的内容的进行居中并加粗。
+    <br />
+    
+cellpadding:单元格的内边距，指的是内容与边框的距离。<br />
+cellspacing:单元格与单元格之间的距离。
+</h2>
+
+<table border="1" bordercolor="#0033FF" width="500px" cellpadding="5" cellspacing="0">
+	
+    <caption>员工信息</caption>
+	<!--第一行-->
+	<tr>
+    	<th>姓名</th>
+        <th>年龄</th>
+    </tr>
+	<!--第二行-->
+    <tr>
+    	<td>张三</td>
+        <td>30</td>
+    </tr>
+    	
+	
+</table>
+
+<hr />
+
+<h2>不规则表格的演示<br />
+
+在单元格中定义两个属性进行表格的调整<br />
+
+colspan:单元格占两列<br />
+rowspan:单元格占两行<br />
+
+</h2>
+
+<table border="1" bordercolor="#0033FF" width="500px">
+	<tr>
+    	<th colspan="2">个人信息</th>
+    </tr>
+    <tr>
+    	<td>张三</td>
+        <td>30</td>
+    </tr>
+    
+</table>
+<br />
+<table border="1" bordercolor="#0033FF" width="500px">
+	<tr>
+    	<th  rowspan="2">个人信息</th>
+        <td>张三</td>
+    </tr>
+    <tr>    	
+        <td>30</td>
+    </tr>
+    
+</table>
+
+<hr />
+<h2>
+强调：在table中有一个特殊的标签。tbody。<br />
+该标签在table中默认存在。<br />
+也就是说，table标签的下一级标签并不是tr，而是tbody。
+</h2>
+<table>
+	
+    <tbody>
+    	<tr>
+        	<td></td>
+        </tr>
+    </tbody>
+    
+    <tbody>
+        <tr>
+        	<td></td>
+        </tr>
+    </tbody>
+    
+</table>
+
+<!--
+练习：
+制作一个3行四列的表格，
+每个单元格中存放一个图片。
+
+-->
+
+<table border="0" bordercolor="#0033FF" width="500px" cellpadding="10">
+	<tr>
+    	<td><a href="1.jpg" target="_blank"><img src="1.jpg" alt="美女与吉他" height="260" width="180" /></a></td>
+        <td><img src="1.jpg" alt="美女与吉他" height="260" width="180"  /></td>
+        <td><img src="1.jpg" alt="美女与吉他" height="260" width="180"  /></td>
+        <td><img src="1.jpg" alt="美女与吉他" height="260" width="180"  /></td>
+    </tr>
+    
+    <tr>
+    	<td><img src="1.jpg" alt="美女与吉他" height="260" width="180"  /></td>
+        <td><img src="1.jpg" alt="美女与吉他" height="260" width="180"  /></td>
+        <td><img src="1.jpg" alt="美女与吉他" height="260" width="180"  /></td>
+        <td><img src="1.jpg" alt="美女与吉他" height="260" width="180"  /></td>
+    </tr>
+    <tr>
+    	<td><img src="1.jpg" alt="美女与吉他" height="260" width="180"  /></td>
+        <td><img src="1.jpg" alt="美女与吉他" height="260" width="180"  /></td>
+        <td><img src="1.jpg" alt="美女与吉他" height="260" width="180" /></td>
+        <td><img src="1.jpg" alt="美女与吉他" height="260" width="180"  /></td>
+    </tr>
+    
+    
+</table>
+</body>
+</html>

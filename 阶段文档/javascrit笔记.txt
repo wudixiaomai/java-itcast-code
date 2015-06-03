@@ -1,0 +1,13 @@
+if(4==x){} 最好将数值写左边 if(x=4)成了赋值语句永远都为true
+当几个值的时候 选择swithc语句
+var str="abc"
+switch(str){case "kk":alert("a")break;
+	case "cedf":alert("dfa");break;
+
+}
+打印了99乘法表 javacript2
+dom 将标记行稳定封装成了对象。同时也将标记行文档中的每一个标签内容以及内容封装成了对象。、
+dom三层模型dom1对html文档进行封装
+dom2对xml文档进行封装，dom3对xml文档
+DHtml(动态的HTML)它是多个技术的综合体。所包含的技术有1，html 用于通过标签将技术封装2,css操作数据的样式3,dom 将文档已经文档中的标签封装成对象4,javascript通过改程序设计语言可以操作dom封装后的所有对象，javasccript相当于这些这些技术的融合剂
++xmlHttpRequest--->Ajax

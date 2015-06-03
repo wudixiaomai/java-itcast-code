@@ -1,0 +1,133 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+
+document:
+
+1,getElementById(id);
+
+2,getElementsByTagName(tagname):返回的是一个数组。
+
+3,getElementsByName(name):返回的是一个数组。通常表单组件都带有name属性。
+
+
+集合属性：all：可以获取到html文档中所有的标签。
+
+document.all.name属性值或者id属性值。
+
+
+注意：使用document对象通过标签名获取的对象数组中存放的整个html页面任意层次下的对象。
+
+
+例：如果通过document对象获取span标签节点对象。那么会获取到两个span标签。
+如果只想获取div中的span。那么最好使用这样的形式：
+1，先获取div节点对象。
+2，在通过div节点对象的getElementsByTagName("span");
+
+只要是容器型标签，都具备getElementsByTagName(tagname)
+
+
+因为标签是具有层次的。
+所以可以按照标签间的关系来对标签进行获取。
+
+1，父节点
+	parentNode
+2，子节点。
+	childNodes:对应的是一个节点对象数组。
+3，兄弟节点：
+	上一个兄弟节点
+    	previousSibling
+    下一个兄弟节点。
+    	nextSibling
+
+---------------
+节点一般属性：
+1，节点名称：标签节点名称就是标签名。文本节点名称#text。
+2，节点类型：
+	标签节点：1
+    属性节点：2
+    文本节点：3
+    注释节点：8
+    document:9
+3，节点值：只有文本节点和注释以及属性节点有值。
+
+这样可以对节点进行判断。
+
+对于属性节点：
+1，setAttribute("属性名","属性值");
+2，getAttribute("属性名"):返回该属性的值。
+
+-------------------
+
+对节点的常见操作。
+1，创建。
+	使用的是document对象createElement(tagname);
+    还有document对象中的createTextNode("");//创建文本节点。
+    
+    只要是容器型标签都具备以下的方法。
+2，添加。
+	appendChild():将指定节点添加到父节点末尾。
+3，替换。
+	replaceNode(newNode):将节点自身替换成newNode。
+    replaceChild(newNode,childNode)：将节点中的一个childNode节点替换成newNode。
+4，插入。
+	insertBefore(newNode,childNode):往指定节点前添加。
+5，复制。
+	cloneNode(boolean):如果传入的是true，那么不仅将该节点克隆，一并该节点的子节点也克隆。
+6，删除
+	removeChild():删除节点的指定子节点。
+    removeNode(boolean)：删除节点自身。如果值为true。删除该节点并包括其子节点
+    					删除自己的原理就是：获取该节点的父节点(parentNode)，然后在使用removeChild将自己删除。
+                        
+                        
+    
+    
+var divNode = document.getElementsByTagName("div")[0];
+
+var spanNode = divNode.getElementsByTagName("span")[0];
+
+//divNode.removeChild(spanNode);
+
+//spanNode.removeNode(true);
+
+
+------------
+
+var spanNode = document.getElementById("spanid");
+
+spanNode.parentNode.removeChild(spanNode);
+
+
+divNode.style.fontSize = "24px";
+
+
+样式预定义。
+
+.类选择器
+.haha{
+	fontSize:"36px";
+    }
+
+通过事件处理代码
+动态该变节点的className的值即可。
+
+divNode.className = "hah";
+
+
+
+动态加载时，要注意样式重叠的优先级问题。
+
+
+<div>
+	<span id="spanid"></span>
+</div>
+
+
+<span></span>
+</body>
+</html>

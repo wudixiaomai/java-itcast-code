@@ -1,0 +1,194 @@
+
+1，多态：
+	好处：对程序提高了扩展性。
+
+	在程序上的体现：
+		父类或者接口的引用指向或者接收其子类的对象。
+
+	前提：
+		类与类之间先有关系。继承，实现。
+		通常都有覆盖。
+
+	
+
+	//先定义一个规则，为了方便于后期的功能扩展。
+	interface PCI
+	{
+		void open();	
+	}
+
+	class MainBoard
+	{
+		void usePCI(PCI p)
+		{
+			p.open();
+		}
+		void run()
+		{}
+	}
+
+	class Main
+	{
+		public static void main(String[] args)
+		{
+			MainBoard m = new MainBoard();
+			m.run();
+			m.usePCI(new SoundCard());
+		}
+	}
+
+
+
+	//一年以后，为了提高电脑的功能，加入了一个声卡。
+	//该声卡要被主板使用，只要符合前期定义的规则即可。
+
+	class SoundCard implements PCI
+	{
+		public void open(){}
+	}
+
+	对象的出现，可以被指挥，并做事情。
+	当对象多了以后，指挥动作就变的很麻烦。
+	为了将其进行简单化，找出这些对象共性，并直接操作该共性类型即可。
+	一次可以指挥一批对象做事情。
+
+
+	Fu f = new Zi();//子类对象提升为了父类型。
+	f.show();
+	f.showZi();
+
+	当多态出现时，对于成员函数的调用：*****
+	1，编译时期：参考的是引用型变量所属的类中是否有调用的方法。
+	2，运行事情：参考的是对象所属的类中是否有调用的方法。
+	编译看左边，运行看右边。
+
+	对于成员变量的调用：
+	只参考引用型变量所属的类。
+	编译和运行都看左边。
+
+
+	//想要使用子类的特有内容，需要对引用进行强制转化。
+	Zi z = (Zi)f;
+
+	//注意：无论怎样转换，都是子类对象在做着类型的变化。
+
+	一个对象具备了多种所属类型。
+	可以对该对象的类型进行判断。使用到了instanceof关键字。
+	if(obj instanceof 类型 )
+		
+--------------------------------------------
+
+	Object:所有对象的父类。里面定义了所有对象都具备的方法。
+
+	boolean equals(Object obj):判断两个对象是否相同，原理：其实就是在判断两个对象内存地址值。
+	相等于==：用于值的判断，
+	equals：用于对象的判断。
+	通常自定义对象的判断方式都有其自身特点。
+	所以都会复写Object类中的equals方法，建立该对象独特的判断方法。
+
+	
+	class Person //extends Object
+	{
+		private String name;
+		private int age;
+		Person(String name,int age)
+		{
+			this.name = name;
+			this.age = age;
+		}
+		public boolean equals(Object obj)
+		{
+			if(!(obj instanceof Person))
+				return false;
+			Person p = (Person)obj;
+
+				
+			return this.name.equals(p.name) && this.age==p.age;
+		}
+
+	}
+
+
+
+	main()
+	{
+		Person p1 = new Person("lisi",30);
+		Person p2 = new Person("lisi",30);
+		System.out.println(p1.equals(p2)));
+	}
+
+	String toString():获取对象的字符串表现形式。
+		默认是：类型@16进制的哈希值。：getClass().getName()+"@"+Integer.toHexString(this.hasCode());
+	当自定义对象时，如果要定义该对象对应的特有字符串表现形式，需要复写该方法。
+
+	Class getClass():获取对象所属的类的字节码文件对象。Demo.class-->Class
+
+	int hashCode():获取对象的内存存放位置。
+
+	void finalize():垃圾回收器会调用的方法。
+
+	System.gc():用于手动启动垃圾回收器。
+
+-----------------------------------------------
+
+	匿名内部类：
+		其实就是内部类的简化形式。
+
+		前提：
+			内部类需要继承一个外部类或者实现一个外部接口。
+
+		格式：new 父类或者接口(){子类代码；}
+
+		原理：
+			内部类就是一个带内容的匿名子类对象。
+	
+	interface Test
+	{
+		void method();
+	}
+	class Outer
+	{
+		public void show()
+		{
+			new Test()
+			{
+				public void method(){}
+			}.method();
+		}
+	}
+
+	
+
+	class Outer
+	{
+		public void show()
+		{
+			new Object()
+			{
+				public void func()
+				{}
+			}.func();//这个运行是没有问题。直接用子类对象调用子类特有方法。
+
+		}
+	}
+	
+	
+	class Outer
+	{
+		public void show()
+		{
+			Object obj = new Object()
+			{
+				public void func()
+				{
+					System.out.println("fun");
+				}
+			};
+			obj.func();//错啦，现在是父类引用在执行子类对象。而父类中没有func方法。编译失败。
+		}
+	}
+
+	在awt中较为常用。
+
+	---------------------------------------------
+

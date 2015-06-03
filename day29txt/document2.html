@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<script type="text/javascript">
+
+/*
+通过节点的层次关系获取节点对象
+
+1，父节点：通过属性parentNode.
+2，子节点。通过集合属性 childNodes 返回来的是一个节点对象数组。获取的是指定节点的直接子节点.
+3，兄弟节点。
+	3.1，上一个兄弟节点：previousSibling
+	3.2，下一个兄弟节点：nextSibling
+	
+注意：ff在解析时，对于标签之间空白符或者回车符会解析为一个文本节点。
+
+*/
+
+function getNode()
+{
+	//先通过document对象获取表格节点。
+	var tabNode = document.getElementById("tabid");
+	//tabNode = document.all.tabid;
+	//alert(tabNode.nodeName);
+	
+	//1,获取表格节点的父节点。parentNode
+	
+	var node  = tabNode.parentNode;
+	
+	//alert(node.nodeName);
+	
+	//2,获取表格节点的子节点。childNodes. 注意表格的子节点是tbody。 
+	
+	var arr = tabNode.childNodes[0].childNodes;
+	
+	//alert(arr[0].nodeName);
+	
+	//3,获取表格上一个兄弟节点，previousSibling
+	var preNode = tabNode.previousSibling;
+	
+	//alert(preNode.nodeName);
+	
+	//4,获取表格的下一个兄弟节点。 nextSibling
+	var nextNode = tabNode.nextSibling;
+	//alert(nextNode.nodeName+"...."+nextNode.nodeType+"....-"+nextNode.nodeValue+"----");
+	
+	var divNode = tabNode.previousSibling;
+	var nodes = divNode.childNodes;
+	alert(nodes[0].nodeName+"......"+nodes[0].nodeType+"......"+nodes[0].nodeValue);
+	
+}
+
+//获取所有的动作并不常用。
+
+function getNode2()
+{
+	var butNode = document.getElementsByName("but")[0];
+	var arr = butNode.attributes;
+	
+	var info = "";
+	
+	for(var x=0; x<arr.length; x++)
+	{
+		info+=arr[x].nodeName+"...."+arr[x].nodeType+"....."+arr[x].nodeValue+"<br/>";
+	}
+	
+	document.write(info);
+}
+</script>
+
+</head>
+
+<body>
+
+
+<input type="button" value="演示document对象" name="but" onclick="getNode2()" />
+
+<div>
+	div区域
+</div>
+
+
+<table id="tabid">
+	<tr>
+    	<td>单元格一</td>
+        <td>单元格二</td>
+    </tr>
+    <tr>
+    	<td>单元格三</td>
+        <td>单元格四</td>
+    </tr>
+</table>
+<a href="javascript:void(0)">一个超链接</a>
+
+<span>
+span区域</span>
+</body>
+</html>

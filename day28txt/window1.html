@@ -1,0 +1,46 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<script type="text/javascript">
+/*
+html的标签都可以作为事件源存在。
+通过标签中的事件属性给该标签进行注册。
+
+通过javascript的函数对事件动作进行处理。
+
+
+*/
+function windemo1()
+{
+	var s1= window.navigator.appName;
+	var s2= window.navigator.appVersion;
+	var s3 = navigator.appCodeName;
+	
+	alert(s1);
+	alert(s2);
+	alert(s3);
+}
+
+
+function windemo2()
+{
+	//var s1 = location.host;
+	//var s2 = location.href;
+	
+	//alert(s1);
+	//alert(s2);
+	
+	//location.href = "http://www.sina.com.cn";
+}
+</script>
+</head>
+
+<body>
+
+<input type="button" value="演示window对象" onclick="windemo2()" />
+
+</body>
+</html>

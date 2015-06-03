@@ -1,0 +1,126 @@
+String：java中提供专门用于操作字符串的对象。
+	特点：一旦初始化就不可以被改变。
+
+	该对象中有哪些常见方法呢：
+	“abc”
+	1，char charAt(index):根据角标获取角标位的字符。
+	2，int indexOf(int):获取字符在字符串中第一次出现的位置。如果没有返回-1.
+	   int indexOf(string):获取字符串在字符串中第一次出现的位置。如果没有返回-1.
+	   int indexOf(string,fromIndex):从指定位置开始，或者该位置后，指定字符串第一次出现的位置。
+	   int lastIndexof(str):从最后位开始进行索引。
+	   而且该方法可以判断，指定字符或字符串是否在字符串中存在。
+
+	3，boolean contains(str):判断指定字符串是否被包含。内部使用的就是indexOf。
+	4，boolean startsWith(str):判断字符串是否以指定字符串str开头。
+	   boolean  endsWith(str):判断字符串是否以指定字符串str结尾。
+	5，String toLowerCase():
+	   String toUpperCase():
+	6，int  length():获取字符串中字符的个数。ab c=4
+	7，boolean equals(str):复写了Object类中的方法。建立了字符串自己的比较相等的方式。
+				字符串比较的是内容是否相同。
+	8，String trim():去除字符串两端的空格。
+	9，char[] toCharArray():将字符串变成字符数组。
+	10，byte[] getBytes():将字符串变成字节数组。
+	11，String[] split(reg)：格局指定规则reg对字符串进行切割。
+	12，static String  copyValueOf(char[] ,offset,len):将一个字符数组变成字符串。
+	    static String valueOf(char[] ,offset,len):将一个字符数组变成字符串。
+	13，String replace(oldChar,newChar):替换字符，如果被替换的字符不存在，返回的是原字符串。
+	14，String replace(s1,s2):可以用于替换自定义字符串。
+	15，String substring(start,end):获取子串，包换start位，不包含end位。
+
+	将字符数组或者字节数组变成字符串也可以通过String类的构造函数。
+
+
+	String s1 = new String("abc");
+	String s2 = "abc";
+	String s3 = "abc";
+
+	System.out.println(s1==s2);//false,内存地址值不同。s1是两个对象。s2是一个对象。
+	System.out.println(s2==s3);//true，s2，和s3指向的是同一个对象，字符串不会再次开辟abc空间，为了优化内存。
+
+	System.out.println(s1.euqlas(s2))//true，比较的是内容。
+
+
+	练习：
+	1，获取指定字符串在给定字符串中出现的次数。
+	思路："rtabcyuabcioabc"
+		1，定义一个计数器。
+		2，获取子串在整串中第一次出现的位置。
+		3，在该位置+子串长度后，对剩余字符串在进行子串的位置获取。
+		4，该动作要不断的执行，需要循环，并对计数器进行自增。
+
+	public int getCount(String str,String sub)
+	{
+		int count = 0;
+		int index = 0;
+		while((index=str.indexOf(sub,index))!=-1)
+		{
+			//System.out.println("index="+index);//来演示index的变化。
+			index = index+sub.length();
+			count++;
+		}
+		return count;
+
+	}
+
+	2，获取两个字符串中最大相同子串。
+	思路：
+		1，以短的那个字符串为主，
+		2，通过长度递减的方式，获取短串中不断出现的子串，
+		3，并用该子串去长串中判断是否存在，如果存在，已找到。
+		"ertabcdyuiy"
+		"vqabcdn"
+		注意：长度递减去子串，其实就是头尾角标的不断变化。
+
+		public static String getMaxSubString(String s1,String s2)
+		{
+			String max,min;
+			max = s1.length()>s2.length()?s1:s2;
+			min = max==s1?s2:s1;
+
+			for(int x=0; x<min.length(); x++)
+			{
+				for(int y=0,z=min.length()-x; z!=min.length()+1; y++,z++)
+				{
+					String temp = min.substring(y,z);
+					if(max.contains(temp))
+						return temp;
+				}
+			}
+			return null;
+		}
+
+
+	3，对字符串中字符进行排序。生成新的字符串。
+	"cadpbe"-->"abcdep"
+	思路：
+		1，想要对字符操作，就要先获取字符，将字符串转成为字符数组。
+		2，对字符数组进行排序，选择或者冒泡任选。
+		3，将排序后的字符数组变成字符串。
+
+	public String sortString(String str)
+	{
+		char[] chs = str.toCharArray();
+		sort(chs);
+		
+		return new String(chs);
+	}
+	private void sort(char[] arr)
+	{
+		for(int x=0; x<arr.length-1; x++)
+		{
+			for(int y=x+1; y<arr.length; y++)
+			{
+				if(arr[x]>arr[y])
+				{
+					char temp = arr[x];
+					arr[x] = arr[y];
+					arr[y] = temp;
+				}
+			}
+		}
+	}
+
+---------------------------------------------------
+
+

@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link rel="stylesheet" href="table.css" />
+<script type="text/javascript" src="doc.js"></script>
+<script type="text/javascript">
+
+
+/*
+想要对表格中的人员信息按照年龄排序。
+
+思路：
+1，获取表格对象。
+2，获取表格对象中需要排序的行节点对象并存储到一个临时数组中。
+3，对该数组中的行对象中的年龄数据排序。
+4，将排好序的行对象重新添加会表格。
+
+*/
+
+var b= true;
+function sorttab()
+{
+	var tabNode = byTag("table")[0];
+	
+	//获取表格所有的行对象。
+	var trs = tabNode.rows;
+	
+	//创建一个临时容器。
+	var arr = new Array();
+	
+	//将需要排序的行对象存入临时容器。其实存入的是该行对象引用。
+	for(var x=1; x<trs.length; x++)
+	{
+		arr[x-1] = trs[x];
+	}
+	
+	
+	//alert(arr[0].cells[1].innerText);
+	
+	sort(arr);
+	
+	
+	//alert(tabNode.childNodes[0].nodeName);
+	//遍历一下排序后的数组。
+	if(b)
+	{
+		for(var x=0; x<arr.length; x++)
+		{
+			//alert(arr[x].cells[0].innerText);
+			
+			tabNode.childNodes[0].appendChild(arr[x]);
+		}
+		b = false;
+	}
+	else
+	{
+		for(var x=arr.length-1; x>=0; x--)
+		{
+			//alert(arr[x].cells[0].innerText);
+			
+			tabNode.childNodes[0].appendChild(arr[x]);
+		}
+		b = true;
+	}	
+}
+
+function sort(arr)
+{
+	for(var x=0; x<arr.length; x++)
+	{
+		for(var y=x+1; y<arr.length; y++)
+		{
+			if(parseInt(arr[x].cells[1].innerText)>parseInt(arr[y].cells[1].innerText))
+			{
+				var temp = arr[x];
+				arr[x] = arr[y];
+				arr[y] = temp;
+			}
+		}
+	}
+}
+</script>
+
+</head>
+
+<body>
+
+<table>
+
+	<tr>
+    	<th>姓名</th>
+        <th><a href="javascript:void(0)" onclick="sorttab()">年龄</a></th>
+        <th>地址</th>
+    </tr>
+    
+    <tr>
+    	<td>张三</td>
+        <td>28</td>
+        <td>北京</td>
+    </tr>
+     <tr>
+    	<td>李四</td>
+        <td>25</td>
+        <td>上海</td>
+    </tr>
+     <tr>
+    	<td>王武</td>
+        <td>20</td>
+        <td>广州</td>
+    </tr>
+     <tr>
+    	<td>赵柳</td>
+        <td>23</td>
+        <td>南京</td>
+    </tr>
+     <tr>
+    	<td>周期</td>
+        <td>24</td>
+        <td>深圳</td>
+    </tr>
+     <tr>
+    	<td>孙八</td>
+        <td>3</td>
+        <td>重庆</td>
+    </tr>
+     <tr>
+    	<td>犀利</td>
+        <td>27</td>
+        <td>沈阳</td>
+    </tr>
+     <tr>
+    	<td>凤姐</td>
+        <td>22</td>
+        <td>铁岭</td>
+    </tr>
+    
+</table>
+</body>
+</html>

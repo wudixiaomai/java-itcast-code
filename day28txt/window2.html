@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<script type="text/javascript">
+
+function winMethod1()
+{
+	//confirm:带有确定和取消按钮的对话框，该返回boolean类型的值。
+	//var b = confirm("我是confirm对话框")	
+	//alert(b);
+}
+
+function winMethod2()
+{
+	//for(var x=0; x<800; x++)
+	//{
+		moveBy(20,0);
+		moveBy(0,20);
+		moveBy(-20,0);
+		moveBy(0,-20);
+	//}
+}
+var time;
+function winMethod3()
+{
+	time = setInterval("winMethod2()",10);
+}
+
+function winMethod4()
+{
+	clearInterval(time);
+}
+
+function winMethod5()
+{
+	open("ad.html","_blank","height=400,width=500,status=no,toolbar=no,menubar=no,location=no");
+}
+
+window.onload = function()
+{
+	//alert("onload");
+}
+
+window.onbeforeunload = function()
+{
+	//alert("onbeforeunload");
+}
+
+window.onunload= function()
+{
+	//alert("onunload");
+}
+</script>
+</head>
+
+<body>
+
+<input type="button" value="演示window对象的方法" onclick="winMethod5()" />
+
+<p></p>
+<input type="button" value="演示window对象的方法" onclick="winMethod4()" />
+</body>
+</html>

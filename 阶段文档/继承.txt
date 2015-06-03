@@ -1,0 +1,154 @@
+面向对象的第二特征：
+继承：
+	*****好处：
+	1，提高了代码的复用性。
+	2，让类与类之间产生了关系。有了这个关系才有了多态的出现。
+
+java只支持单继承，不支持多继承(其实java保留了多继承机制，
+但是多继承容易出现问题，用另一种方式来体现--多实现)。
+
+java支持多层继承。****
+其实就是一个继承体系。
+继承体系何来？其实都是通过对事物的分析，将共性内容不断向上抽取而来的。
+
+想要对一个继承体系的功能进行使用时，可以参考一个技巧。
+查阅顶层父类中的方法。因为这里的方法都是共性方法。
+建立该体系中最子类的对象。
+如果需要使用子类特有方法时，才需要查看子类的方法。
+
+
+什么时候定义继承呢？*****
+
+当类与类之间存在所属(is a)关系时，就可以定义继承。
+如何判断所属关系呢？一个类是否可以获取到另一个类中所有的内容，如果可以，那么可以继承。
+
+class DemoA
+{
+	void showA(){}
+	void showB(){}
+	void showC(){}
+}
+
+
+//DemoB中也有一个showC()方法。那么DemoA中已经定义好了，可不可以直接继承过来用呢？
+//很遗憾，showA()，showB()，并不是适合DemoB，也就是DemoB中不可以有showA()，showB()
+class DemoB 
+{
+	void showC(){}
+	void showD(){}
+}
+
+
+//虽然DemoB不可以继承DemoA，但是发现他们有共性方法。那么可以继续向上抽取。
+class Demo
+{
+	void showC(){}
+}
+
+class DemoA extends Demo
+{
+	void showA(){}
+	void showB(){}
+}
+class DemoB extends Demo
+{
+	void showD(){}
+}
+
+--------------------------------------------
+
+子父类出现后，类中的成员有什么变化。
+
+1，成员变量。
+	当子父类中定义了同名的成员变量时，在子类中如果要访问父类中的同名成员变量，需要使用super进行区分。
+	通常这种情况很少见，父类已定义，子类直接使用即可。
+
+
+2，成员函数。*****
+	当子父类中出现了一模一样的方法时，出现一个覆盖操作。
+	注意：覆盖是发生在函数上的。
+	通常可以用于程序的扩展。
+	注意事项：
+	1，子类覆盖父类时，权限一定要大于等于父类权限。
+	2，静态只能覆盖静态。
+	
+	当覆盖时，子类的方法还要使用父类中的被覆盖方法，可以通过super关键字来调用。
+3，构造函数。***
+	强调的就是子类的实例化过程。
+	子类中所有的构造函数默认第一行都有一个隐式的语句就是:super();
+	会访问父类空参数的构造函数。
+	为什么非要访问父类中的构造函数呢？
+	因为子类会获取父类的成员，所以要先看父类是如何对该成员进行初始化的。
+
+	当父类中没有定义空参数构造函数时，
+	子类必须通过super语句，或者this语句，指定要访问的构造函数。
+	其实父类中的构造函数默认也有super语句。那么它访问的是谁呢？
+	java中的所有类的父类，Object 上帝！。
+
+
+
+	super关键字：
+	该关键字的用法和this一致。不同的是：
+	this代表是本类引用。
+	super代表的是父类引用。
+
+	注意：this语句或者super语句，一定要放在构造函数的第一行。
+		因为初始化动作要先执行。
+		super();
+
+
+
+	示例：
+	要求通过给定需求，对需求进行设计。
+	一个公司，有经理和员工。员工的属性：姓名，工号，工资。
+	经理：姓名，工号，工资，奖金。
+	他们都有工作方法。
+		
+	思路：员工和经理本身不存在所属关系。
+	但是员工和经理具备一些共性内容，他们都是打工者(雇员)
+
+	abstract class Employee
+	{
+		private String name;
+		private String id;
+		private double pay;
+		Employee(String name,String id,double pay)
+		{
+			this.name  = name;
+			this.id = id;
+			this.pay = pay;
+		}
+		abstract void work();
+
+	}
+	
+
+	class Pro extends Employee
+	{
+		Pro(String name,String id,double pay)
+		{
+			super(name,id,pay);
+		}
+		public void work(){}
+	}
+
+	class Manager extends Employee
+	{
+		private double bonus;
+		Manager(String name,String id,double pay,double bonus)
+		{
+			super(name,id,pay);
+			this.bonus = bonus;
+		}
+		public void work(){}
+	}
+------------------------------------------------
+
+	
+
+
+
+
+
+
+	

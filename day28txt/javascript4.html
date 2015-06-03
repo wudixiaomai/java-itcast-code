@@ -1,0 +1,119 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+<script type="text/javascript">
+
+
+/*
+介绍两个Javascript语言特有的语句。
+1，with
+with(对象)
+{
+	该区域中可以直接使用对象的属性和行为。
+}
+
+2.for  in:可以对对象进行遍历。
+*/
+
+function Person()
+{
+	this.name = "zhangsan";
+	this.age = 49;
+	
+}
+
+var p = new Person();
+
+
+//想要使用对象中的成员，必须要通过对象.的形式来调用。但是如果对象名称过程。那么代码书写起来就会很麻烦。
+
+//想要简化这个动作，可以通过with语句来完成。
+//alert(p.name+"......."+p.age);
+
+with(p)
+{
+	//alert(name+"-----"+age);
+}
+
+for( x in p)
+{
+	//alert(x+"::::::"+p[x]);
+}
+
+
+var arr = [4,1,5,6];
+
+for( x in arr)
+{
+	alert(arr[x]);
+}
+
+</script>
+
+
+
+
+
+<script type="text/javascript">
+
+/*
+在javascript中的自定义对象
+
+1，定义一个函数。
+2，使用new操作符。创建对象。
+*/
+/*
+function Person()
+{
+	//alert("person");
+}
+
+function show()
+{
+	alert("show");
+}
+
+//创建person对象。
+var p = new Person();
+
+//给p对象指定成员。
+p.name = "lisi";
+p.age = 30;
+p.method = show;
+p.method();
+*/
+
+
+//alert(p.name+"::"+p.age);
+
+
+/**/
+function Person(name,age)
+{
+	this.name = name;
+	this.age = age;
+	this.show = function()
+	{
+		alert(this.name+"::::::"+this.age);
+	}
+}
+
+
+var p = new Person("lisisi",40);
+
+//alert(p.name+":::"+p.age);
+//p.show();
+
+//alert(p['name']+"------"+p["age"]);
+
+
+</script>
+
+
+</body>
+</html>

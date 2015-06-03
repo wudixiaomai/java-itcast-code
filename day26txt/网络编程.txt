@@ -1,0 +1,402 @@
+网络编程：
+	网络七层：
+
+	关注的是传输层和网际层。
+	在web开发过程中，关注应用层。
+
+	关键的要素：
+	1，IP地址：互联网上每一个设备的唯一标识。因为不方便于记忆或者书写，给ip地址起了名字，
+			127.0.0.1  localhost。
+	2，端口：机器上为了标识的应用程序的数字。
+		0~65535  建议0~1024被系统使用或者保留。
+
+	3，协议：网络通讯的规则。
+		TCP,UDP.
+		TCP:面向连接，通过三次握手来确定连接，效率稍低，因为每次在传输数据前都需要建立连接。
+			但是连接建立后，在连接通道中可以进行大数据量传输。可靠协议。
+
+		UDP:面向无连接，速度块，但容易丢包。而且包的最大体积64k。不可靠协议。
+		
+
+---------------------
+	涉及到的对象。
+	InetAddress：用于描述ip的对象。该对象没有构造函数。
+		InetAddress getLocalHost():获取本地主机ip。
+		InetAddress getByName(host):获取指定主机的ip。
+		InetAddress[] getAllByName("www.baidu.com"):返回的是百度主机对应的ip地址数组。
+		String getHostAddress():获取ip对象的ip地址字符串。
+		String getHostName():获取ip对象的主机名。
+	
+	Socket：网络通讯的端点，给网络服务提供的一个机制。
+	也就是说，想要网络通讯，其实就是socket间通讯。
+	对于TCP和UDP都有自己的socket对象。
+
+	UDP协议：
+		1，DatagramSocket
+		2，DatagramPacket
+		udp的传输的基本思路：
+		1，发送端
+			1.1 建立udpsocket服务端点。
+				 该端点建立，系统会随机分配一个端口。
+				 如果不想随机配置，可以手动指定。
+			1.2 将数据进行packet包的封装，必须要指定目的地地址和端口。
+			1.3 通过socket服务的send方法将该包发出。
+			1.4 将socket服务关闭。主要是关闭资源。
+		2，接收端
+			2.1 建立udp的socket服务。要监听一个端口。
+			2.2 定义一个缓冲区，将该缓冲区封装到packet包中。
+				目的：将接收到数据存入该packet包中。因为数据信息有很多，如：源地址，端口，数据主体等。
+				为了方便获取这些不同信息，可以通过对象的形式，调用该对象功能即可。
+			2.3 通过socket的receive方法将数据存入数据包中。
+			2.4 通过数据包的方法getData(),getAddress(),getPort()等方法获取包中的指定信息。
+			2.5 关闭socket.关闭资源(可选)
+
+		用代码体现一下以上思路：
+		发送端：
+		main()
+		{
+				
+			DatagramSocket ds = new DatagramSocket();
+
+			byte[] buf = "wo shi shu ju".getBytes();
+			DatagramPacket dp = 
+			new DatagramPacket(buf,buf.length,InetAddress.getByName("192.168.1.254"),9001);
+
+			ds.send(dp);
+
+			ds.close();
+		}
+
+		接收端：
+		main()
+		{
+			DatagramSocket ds = new DatagramSocket(9001);
+
+			byte[] buf = new byte[1024];
+			DatagramPacket dp = new DatagramPacket(buf,buf.length);
+
+			ds.receive(dp);//该方法是阻塞式的。
+
+			String ip = dp.getAddress().getHostAddress();
+
+			String text = new String(dp.getData(),0,dp.getLength());
+
+			int port = dp.getPort();
+
+			System.out.println(ip+":"+port+"..."+text);
+
+			ds.close();
+		}
+
+
+	-----------------------------
+	通过UDP完成一个聊天程序。
+	思路：
+	聊天程序有两个动作，一个接收一个发送。
+	需要同时执行。就要使用到多线程技术。
+	两个动作需要分别封装到两个run方法中。
+
+	class Send implements Runnable
+	{
+		private DatagramSocket ds;
+		Send(DatagramSocket ds)
+		{
+			this.ds = ds;
+		}
+		public void run()
+		{
+			try 
+			{
+				BufferedReader bufr = 
+					 new BufferedReader(new InputStreamReader(System.in));
+				
+				String line = null;
+				while((line=bufr.readLine())!=null)
+				{
+					if("886".equals(line))
+						break;
+					byte[] buf = line.getBytes();
+					DatagramPacket dp = 
+					new DatagramPacket(buf,buf.length,InetAddress.getByName("192.168.1.255"),9002);
+
+					ds.send(dp);
+				}
+
+				ds.close();
+			}
+			catch(Exception e)
+			{
+			}
+		}
+	}
+
+	class Rece implement Runnable
+	{
+		private DatagramSocket ds;
+		Rece(DatagramSocket ds)
+		{
+			this.ds = ds;
+		}
+		public void run()
+		{
+			try 
+			{
+				while(true)
+				{
+					byte[] buf = new byte[1024];
+					DatagramPacket dp = new DatagramPacket(buf,buf.length);
+
+					ds.receive(dp);
+					String ip = dp.getAddress().getHostAddress();
+					String text = new String(dp.getData(),0,dp.getLength());
+					int port = dp.getPort();
+					System.out.println(ip+":"+port+"..."+text);
+				}
+
+			}
+			catch(Exception e)
+			{
+				
+			}
+		}
+	}
+
+---------------------------------------------
+
+TCP:
+tcp协议也对应socket对象。
+分的客户端和服务端。
+客户端是：Socket
+服务端是：ServerSocket
+
+对于客户端创建对象。常见方式：
+1，Socket(String host,int port);
+	socket对象建立时，就会去连接指定的目的地址和端口。
+	如果主机名写错。会发生UnknownHostException
+	如果端口不存在或没开启，会发生.ConnectException
+	还有一种情况也会发生ConnectException，服务端拒绝连接。
+	服务端：
+		//一次只允许同时连接两个客户端。
+		ServerSocket ss  = new ServerSocket(10002,2);
+
+		Thread.sleep(1000000);
+
+	客户端：
+		Socket s1 = new Socket("192.168.1.254",10002);
+		System.out.println("s1:"+s1);
+		Socket s2 = new Socket("192.168.1.254",10002);
+		System.out.println("s2:"+s2);
+		//第三个连接就会发生ConnectException.
+		Socket s3 = new Socket("192.168.1.254",10002);
+		System.out.println("s3:"+s3);
+
+
+2，Socket() ：
+	建立socket服务，但是并没有在初始化时指定目的主机和端口，
+	就需要通过connect方法去连接指定的目的地。
+	通过这个方法连接有一个好处，这个好处就是可以指定超时时间。
+	connect(SocketAddress,timeOut);
+	try
+	{
+		Socket s = new Socket();
+		SocketAddress sa = new InetSocketAddress(InetAddress.getByName("192.168.1.254"),10000);
+
+		s.connect(sa,3);
+	}
+	catch (Exception e)
+	{
+		System.out.println(e.toString());
+	}
+	会发生超时异常。SocketTimeoutException: connect timed out
+
+
+
+
+	connect方法接收SocketAddress对象。传递一个SocketAddress的子类对象InetSocketAddress。
+	
+	++++++++++
+	+InetSocketAddress和InetAddress有什么不同。
+	+前者封装了ip和端口。
+	+后者只封装了ip。
+	+++++++++
+
+
+	BindException:当应用程序使用一个已经被占用的端口时，就会发生该异常。
+
+	IOException
+		|--SocketException
+			|--BindException
+			|--ConnectException
+		|--InterruptedIOEexception
+			|--SocketTimeoutException
+		|--UnknownHostException
+
+
+
+	
+-------------------
+	客户端思路：
+	1，建立客户端socket服务。通常要指定目的地的ip和端口。
+	2，建立连接后，会出现socket流。需要通过
+		getInputStream()或者getOutputStream()获取socket流中的输入流或者输出流对象。
+		和服务端进行通讯。
+		如果出现循环并其中有阻塞式方法，
+		有可能需要使用shutdownOutput(),shutdownInput().对输入或者输出流进行关闭。
+		其实就是在往另一端定义结束标记。
+	3，关闭socket资源。
+
+	服务端思路：
+	1，建立服务端的socket服务，通常要监听一个端口。
+	2，通过accept方法获取客户端对象。
+	3，通过客户端对象的socket流和指定的客户端进行通讯。
+	4，关闭客户端。
+	5，关闭服务端(可选)
+
+	通过代码来体现：
+	客户端：
+	main()
+	{
+		Socket s = new Socket("192.168.1.254",10003);
+
+		OutputStream out = s.getOuputStream();
+		out.write("fa dian shu ju ".getBytes());
+
+		InputStream in = s.getInputStream();
+		byte[] buf = new byte[1024];
+		int len = in.read(buf);
+
+		System.out.println(new String(buf,0,len));
+
+		s.close();
+	}
+
+	服务端：
+	main()
+	{
+		ServerSocket ss = new ServerSocket(10003);
+		Socket s = ss.accept();//accept方法是阻塞式的。
+
+		InputStream in = s.getInputStream();
+		byte[] buf = new byte[1024];
+		int len = in.read(buf);
+		System.out.println(new String(buf,0,len));
+
+		OutputStream out = s.getOutputStream();
+		out.write("收到".getBytes());
+
+		s.close();
+
+		ss.close();
+	}
+		
+
+	//文本文件上传。
+	客户端
+	main()
+	{
+		Socket s = new Socket("192.168.1.254",10004);
+		BufferedReader bufr = 
+			new BufferedReader(new FileReader("a.txt"));
+
+		PrintWriter out = new PrintWriter(s.getOutputStream(),true);
+
+		String line = null;
+		while((line=bufr.readLine())!=null)
+		{
+			out.println(line);
+		}
+
+		s.shutdownOutput();
+
+		BufferedReader bufIn = 
+			new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+		String info = bufIn.readLine();
+
+		System.out.println(info);
+
+		bufr.close();
+		s.close();
+	}
+		
+	服务端：
+	main()
+	{
+		ServerSocket ss = new ServerSocket(10004);
+		Socket s = ss.accept();
+
+		BufferedReader bufIn = new BufferedReader(new InputStreamReader(s.getInputStream()));
+
+		PrintWriter pw = new PrintWriter(new FileWriter("b.txt"),true);
+
+		String line = null;
+		while((line=bufIn.readLine())!=null)
+		{
+			pw.println(line.toUpperCase());
+		}
+
+		PrintWriter out = new PrintWriter(s.getOutputStream(),true);
+
+		out.println("上传成功");
+
+		s.close();
+		ss.close();
+
+
+	}
+
+
+
+
+class UserThread implements Runnable
+{
+	private Socket s;
+	UserThread(Socket)
+	{
+		this.s = s;
+	}
+	public void run()
+	{
+		
+	}
+}
+//将服务端获取到的客户端对象封装成线程。
+
+class ServerDemo 
+{
+	public static void main(String[] args)
+	{
+		ServerSocket ss = new ServerSocket(10000);
+
+		while(true)
+		{
+			Socket s = ss.accept();
+
+			new Thread(new UserThread(s)).start();
+		}	
+
+	}
+}
+
+
+练习：
+1，上传图片。
+2，用户登录。
+
+
+URL：将协议主机端口资源路径进行封装的对象。
+	URL url = new URL("http://www.sian.com.cn/index.html?name=lisi");
+
+	URLConnection openConnection():可以打开指定url连接。返回一个连接URLConnection对象。
+	
+
+	InputStream openStream():该方法的原理就是 openConnection().getInputStream();
+
+
+
+URLConnection:url连接对象。
+	InputStream getInputStream():如果获取到的是服务器返回的http协议的信息。
+			该方法会自动解析http消息头。只返回数据正文部分。
+	getOutputStream():
+
+

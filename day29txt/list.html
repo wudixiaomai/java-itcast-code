@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<style type="text/css">
+dl{
+	height:16px;
+	overflow:hidden;
+	}
+
+.open{
+	overflow:visible;
+	}
+.close{
+	
+	overflow:hidden;
+	}
+</style>
+<script type="text/javascript">
+/*
+var b = true;
+function list1()
+{
+	var divNode = document.getElementsByTagName("div")[0];
+	
+	if(b)
+	{
+		divNode.style.height = "8px";
+		divNode.style.overflow = "hidden";
+		b = false;
+	}
+	else
+	{
+		divNode.style.height = "8px";
+		divNode.style.overflow = "visible";
+		b = true;
+	}
+}
+
+function list()
+{
+	var divNode = document.getElementsByTagName("div")[0];
+	
+	if(divNode.className=="close")
+	{
+		divNode.className = "open";
+	}
+	else
+	{
+		divNode.className = "close";
+	}
+}
+*/
+
+//对dl列表进行展开闭合的定义。
+/*
+两种获取事件源的方式；
+1,event.srcElement
+2,this
+.
+*/
+function list1(dtNode)
+{
+	//var dtNode = event.srcElement;
+	
+	//要获取被操作的对象dl。
+	
+	var dlNode = dtNode.parentNode;
+	
+	if(dlNode.className=="open")
+	{
+		dlNode.className = "close";
+	}
+	else
+	{
+		dlNode.className = "open";
+	}	
+	
+}
+
+
+
+//开一个，关其他。
+function list(dtNode)
+{
+	//1,获取当前的dl对象。
+	var dlNode = dtNode.parentNode;
+	
+	//2,获取所有的dl对象。
+	var dlNodes = document.getElementsByTagName("dl");
+	
+	for(var x=0;x<dlNodes.length; x++)
+	{
+		if(dlNodes[x]==dlNode)
+		{
+			if(dlNode.className=="open")			
+				dlNode.className = "close";		
+			else			
+				dlNode.className = "open";
+			
+		}
+		else
+			dlNodes[x].className = "close";
+	}
+}
+
+
+
+
+</script>
+
+</head>
+
+<body>
+
+<!--div  onclick="list()">
+这是一个div区域
+</div-->
+
+<!--
+1,先将数据封装到html标签中。
+2，定义数据基本样式。
+3，定义动态样式
+4，确定事件源，和被操作的区域。
+5，获取所需对象对对象进行样式的动态指定。
+
+
+
+
+-->
+
+
+<!--展开闭合示例-->
+<dl>
+	<dt onclick="list(this)">上层项目上层项目</dt>
+    <dd>下层项目下层项目</dd>
+    <dd>下层项目下层项目</dd>
+    <dd>下层项目下层项目</dd>
+    <dd>下层项目下层项目</dd>   
+</dl>
+
+<dl>
+	<dt onclick="list(this)">上层项目上层项目</dt>
+    <dd>下层项目下层项目</dd>
+    <dd>下层项目下层项目</dd>
+    <dd>下层项目下层项目</dd>
+    <dd>下层项目下层项目</dd>   
+</dl>
+
+<dl>
+	<dt onclick="list(this)">上层项目上层项目</dt>
+    <dd>下层项目下层项目</dd>
+    <dd>下层项目下层项目</dd>
+    <dd>下层项目下层项目</dd>
+    <dd>下层项目下层项目</dd>   
+</dl>
+<dl>
+	<dt onclick="list(this)">上层项目上层项目</dt>
+    <dd>下层项目下层项目</dd>
+    <dd>下层项目下层项目</dd>
+    <dd>下层项目下层项目</dd>
+    <dd>下层项目下层项目</dd>   
+</dl>
+
+</body>
+</html>

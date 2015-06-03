@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<style type="text/css">
+
+img{
+	border:0px;
+	}
+</style>
+</head>
+
+<body>
+
+<a name="top">顶部位置</a>
+
+<h2>超链接标签演示 a 
+<br />
+
+target:链接资源的打开方式，_blank是在新窗口打开并显示资源内容。<br />
+
+<pre>
+点击一个超链接所做的事情：<br />
+
+1,向指定资源发出请求
+	1.1：解析href信息。获取其中的协议。并启动协议对应的解析引擎(就是可以解析该协议的应用程序)。
+   	1.2：获取其中的主机信息，如果主机不是ip地址。那么需要进行解析。
+    		解析动作：
+            1，先在本机的C:\WINDOWS\system32\drivers\etc\hosts文件中查找该主机名是否有对应的ip地址。
+            	如果有，那么访问该ip地址的主机。
+              	如果没有，会去指定的DNS或者默认的DNS服务器查找该主机对应的ip地址。
+                
+            2，获取到ip地址后，直接访问对应的主机，请求该主机的指定资源。index.html
+            
+            
+    去访问主机为 www.sina.com.cn的这台主机。
+</pre>
+<!--pre>
+class Demo
+{
+	public void show()
+    {
+    	
+    }
+}
+</pre-->
+</h2><br />
+
+
+<a href="http://www.xxx.com/1.exe"><img src="2.bmp"  /></a>
+
+<p></p>
+<a href="http://www.sina.com.cna?name=hah" target="_blank" title="这是一个门户网站">下载地址</a><br />
+
+<br />
+
+<h3>href="www.sina.com.cn" 启动是File:///引擎</h3>
+<a href="www.sina.com.cn">又是一个新浪</a>
+
+<p></p>
+<a href="mailto:abc@sohu.com?cc=kk@sina.com&subject=hahahhahh">联系我们</a>
+
+
+<p></p>
+
+<a href="thunder://sdafsdafsadfsadfsadfsadfsadfsrwerfwdfasfasfsadfs">我是一个电影</a>
+
+<p></p>
+
+<a href="#top">返回顶部位置</a>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

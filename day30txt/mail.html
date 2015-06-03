@@ -1,0 +1,234 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<style type="text/css">
+
+table{
+	border:#0033FF 1px solid;
+	width:600px;
+	border-collapse:collapse;
+	}
+	
+table th,table td{
+	border:#0066FF 1px solid;
+	padding:5px;
+	}
+table th{
+	background-color:#00CC33;
+	}
+
+.one{
+	background-color:#CCFF66;
+	}
+.two{
+	background-color:#66FFFF;
+	}
+.over{
+	background-color:#0099CC;
+	}
+</style>
+
+
+
+<script type="text/javascript">
+
+/*
+1,行颜色间隔显示。
+*/
+var name;
+function trColor()
+{
+	var tabNode = document.getElementById("mailid");
+	
+	var trs = tabNode.rows;
+	
+	for(var x=1; x<trs.length-1; x++)
+	{
+		if(x%2==1)
+			trs[x].className = "one";
+		else
+			trs[x].className = "two";
+		trs[x].onmouseover = function()
+		{
+			name = this.className;
+			this.className= "over";
+			
+		}
+		trs[x].onmouseout = function()
+		{
+			this.className = name;
+		}
+		
+	}
+}
+
+//该行颜色间隔显示样式需要页面加载完毕后，就立刻呈现。使用onload事件
+
+onload = function()
+{
+	trColor();
+}
+
+
+/*
+复选框的全选功能。
+*/
+
+function checkAllMail(index)
+{
+	var allMailNode = document.getElementsByName("allmail")[index];
+	
+	var mails = document.getElementsByName("mail");
+	
+	for(var x=0;x<mails.length; x++)
+	{
+		mails[x].checked = allMailNode.checked;
+	}
+}
+
+
+/*
+通过按钮选取邮件
+*/
+
+function checkAllByBut(num)
+{
+	var mails = document.getElementsByName("mail");
+	
+	for(var x=0;x<mails.length; x++)
+	{
+		if(num>1)
+			mails[x].checked = !mails[x].checked;
+		else
+			mails[x].checked = num;
+	}
+}
+
+/*
+删除邮件
+*/
+
+function delMail()
+{
+
+	if(!confirm("你真的要删除所选中的邮件吗?"))
+		return ;
+	var mails = document.getElementsByName("mail");
+	
+	var arr = new Array();
+	var pos = 0;
+	for(var x=0;x<mails.length;x++ )
+	{
+		if(mails[x].checked)
+		{
+			var trNode = mails[x].parentNode.parentNode;
+			arr[pos++] = trNode;
+
+		}
+	}
+	
+	for(var x=0; x<arr.length; x++)
+	{
+		arr[x].removeNode(true);
+	}
+	
+	trColor();
+	
+}
+</script>
+
+</head>
+
+<body>
+
+<table id="mailid">
+
+	<tr>
+    	<th><input type="checkbox" name="allmail" onclick="checkAllMail(0)" />全选</th>
+        <th>发件人</th>
+        <th>邮件名称</th>
+        <th>附属信息</th>
+    </tr>
+    
+    <tr>
+    	<td><input type="checkbox" name="mail"  /></td>
+        <td>张三11</td>
+        <td>邮件名称</td>
+        <td>附属信息</td>
+    </tr>
+     <tr>
+    	<td><input type="checkbox" name="mail"  /></td>
+        <td>张三22</td>
+        <td>邮件名称</td>
+        <td>附属信息</td>
+    </tr>
+     <tr>
+    	<td><input type="checkbox" name="mail"  /></td>
+        <td>张三33</td>
+        <td>邮件名称</td>
+        <td>附属信息</td>
+    </tr>
+     <tr>
+    	<td><input type="checkbox" name="mail"  /></td>
+        <td>张三44</td>
+        <td>邮件名称</td>
+        <td>附属信息</td>
+    </tr>
+     <tr>
+    	<td><input type="checkbox" name="mail"  /></td>
+        <td>张三55</td>
+        <td>邮件名称</td>
+        <td>附属信息</td>
+    </tr>
+     <tr>
+    	<td><input type="checkbox" name="mail"  /></td>
+        <td>张三66</td>
+        <td>邮件名称</td>
+        <td>附属信息</td>
+    </tr>
+     <tr>
+    	<td><input type="checkbox" name="mail"  /></td>
+        <td>张三77</td>
+        <td>邮件名称</td>
+        <td>附属信息</td>
+    </tr> <tr>
+    	<td><input type="checkbox" name="mail"  /></td>
+        <td>张三88</td>
+        <td>邮件名称</td>
+        <td>附属信息</td>
+    </tr> <tr>
+    	<td><input type="checkbox" name="mail"  /></td>
+        <td>张三99</td>
+        <td>邮件名称</td>
+        <td>附属信息</td>
+    </tr> <tr>
+    	<td><input type="checkbox" name="mail"  /></td>
+        <td>张三00</td>
+        <td>邮件名称</td>
+        <td>附属信息</td>
+    </tr>
+     <tr>
+    	<td><input type="checkbox" name="mail" /></td>
+        <td>张三aa</td>
+        <td>邮件名称</td>
+        <td>附属信息</td>
+    </tr>
+    
+    
+    <tr>
+    	<th><input type="checkbox" name="allmail" onclick="checkAllMail(1)"  />全选</th>
+        <th colspan="3">
+        	<input type="button" value="全选" onclick="checkAllByBut(1)" />
+            <input type="button" value="取消全选" onclick="checkAllByBut(0)" />
+            <input type="button" value="反选"  onclick="checkAllByBut(2)" />
+            <input type="button" value="删除所选邮件" onclick="delMail()" />
+        </th>
+        
+    </tr>
+</table>
+
+
+</body>
+</html>

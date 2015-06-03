@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+
+<style type="text/css">
+
+table{
+	border:#0066FF solid 1px;
+	width:600px;
+	}
+table td,table th{
+	border:#0099FF solid 1px;
+	padding:5px;
+	}
+table th{
+	background-color:#009999;
+	}
+	
+.one{
+	background-color:#FFCC66;
+	}
+.two{
+	background-color:#CCCC00;
+	}
+.over{
+	background-color:#0066FF;
+	}
+</style>
+
+
+
+<script type="text/javascript">
+/*
+表格的行颜色间隔显示
+
+思路：
+1，获取所有的行节点对象
+	就要先获取表格对象。
+2，对行节点对象进行动态的样式定义。
+*/
+
+function trColor()
+{
+	var tabNode = document.getElementsByTagName("table")[0];
+	
+	var trs = tabNode.rows;
+	
+	for(var x=1; x<trs.length; x++)
+	{
+		if(x%2==1)
+			trs[x].className = "one";
+		else
+			trs[x].className = "two";
+			
+		trs[x].onmouseover = function()
+		{
+			name = this.className;
+			this.className = "over";
+		}
+		trs[x].onmouseout = function()
+		{
+			this.className = name;
+		}
+	}
+	
+}
+
+window.onload = trColor;
+var name;
+
+/*
+function over(trNode)
+{
+	name = trNode.className;
+	trNode.className = "over";
+}
+
+function out(trNode)
+{
+	trNode.className = name;
+}
+*/
+</script>
+
+</head>
+
+<body>
+
+<table>
+
+	<tr>
+    	<th>行头</th>
+        <th>行头</th>
+        <th>行头</th>
+        <th>行头</th>
+    </tr>
+    
+    <tr>
+    	<td>行内容信息</td>
+        <td>行内容信息</td>
+        <td>行内容信息</td>
+        <td>行内容信息</td>
+    </tr>
+    <tr>
+    	<td>行内容信息</td>
+        <td>行内容信息</td>
+        <td>行内容信息</td>
+        <td>行内容信息</td>
+    </tr>
+    <tr>
+    	<td>行内容信息</td>
+        <td>行内容信息</td>
+        <td>行内容信息</td>
+        <td>行内容信息</td>
+    </tr>
+    <tr>
+    	<td>行内容信息</td>
+        <td>行内容信息</td>
+        <td>行内容信息</td>
+        <td>行内容信息</td>
+    </tr>
+    <tr>
+    	<td>行内容信息</td>
+        <td>行内容信息</td>
+        <td>行内容信息</td>
+        <td>行内容信息</td>
+    </tr>
+    <tr>
+    	<td>行内容信息</td>
+        <td>行内容信息</td>
+        <td>行内容信息</td>
+        <td>行内容信息</td>
+    </tr>
+    <tr>
+    	<td>行内容信息</td>
+        <td>行内容信息</td>
+        <td>行内容信息</td>
+        <td>行内容信息</td>
+    </tr>
+    
+
+</table>
+
+</body>
+</html>
